@@ -20,6 +20,13 @@ Curl to a website using a specific host header - check if the virtualhost is con
 curl --verbose --header 'Host: www.domain.tld' 'http://www.some-hosting-server.tld'
 ```
 
+Curl with proxy, check only for header:
+```
+curl -x proxy_ip:8080 -Is https://www.google.com
+HTTP/1.1 200 Connection established
+[...]
+```
+
 
 ## SSL
 

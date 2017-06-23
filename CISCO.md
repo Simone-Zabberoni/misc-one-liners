@@ -81,7 +81,7 @@ crypto ikev1 policy 20
 ```
 
 In detail:
- * `crypto ipsec ikev1 transform-set` : creates a transform set for encryption, referenced in the crypto map
+ * `crypto ipsec ikev1 transform-set` : creates a transform set for encryption, referenced in the crypto map (phase 2)
  * `crypto map` : glue toghether all the vpn settings:
     * `outside_map` : crypto map name
     * `20` : sequence ID, must be different for each VPN tunnel bound to the same map
@@ -119,3 +119,21 @@ tunnel-group 1.2.3.4 ipsec-attributes
 The tunnel group name is set to the remote peer ip address.
 When negotiating a L2L each peer sends its ISAKMP identity to the remote  peer. It sends either its IP address or host name dependent upon how  each has its ISAKMP identity set.
 By default, the ISAKMP identity of the ASA is set to the IP address.
+
+
+## ASA SSH
+
+Create a user and configure local authentication:
+
+```
+username my_user password xxxxxxxxxxxxx encrypted privilege 15
+aaa authentication ssh console LOCAL
+```
+
+Create keys, enable ssh and enable ssh access on Internal interface only from the specified network:
+
+```
+crypto key generate rsa general-keys modulus 2048
+ssh scopy enable
+ssh 10.0.0.0 255.0.0.0 Internal
+```

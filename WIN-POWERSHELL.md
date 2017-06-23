@@ -138,6 +138,12 @@ Get-ChildItem   $root  -Recurse  |  ? {
 } |  Remove-Item
 ```
 
+Reset file permission recursively, based on a master file access-list:
+```
+$NewAcl = Get-Acl File0.txt
+Get-ChildItem c:\temp -Recurse -Include *.txt -Force | Set-Acl -AclObject $NewAcl
+```
+
 Count files in a directory:
 ```
 [System.IO.Directory]::GetFiles("c:\windows\temp", "*").Count
