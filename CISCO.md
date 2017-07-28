@@ -1,4 +1,4 @@
-# ASA, switch and router useful commands
+# ASA, CUCM, switch and router useful commands
 
 
 ## Router DNS and NTP setup
@@ -19,6 +19,60 @@ Either one or the other:
 ```
 ip default-gateway 1.1.1.1
 ip route 0.0.0.0 0.0.0.0 1.1.1.1
+```
+
+
+## CUCM - Call Manager
+
+Create a phone number entry and bind it to a phone by mac address and model:
+
+```
+conf t
+
+voice register dn  66
+ number 1234
+ allow watch
+ name My Test Phone
+ label My Test Phone
+ mwi
+
+voice register pool  66
+ busy-trigger-per-button 2
+ id mac ABCD.ABCD.ABCD
+ type 7821
+ number 1 dn 66
+ template 1
+ dtmf-relay rtp-nte
+ username someuser password somepassword
+ codec g711alaw
+```
+
+After that, we need to rebuild the configuration files which will be served via tftp:
+
+```
+voice register global
+ create profile
+```
+This could take a while, then to check the MAC to config file mapping:
+
+```
+show voice register tftp-bind
+[...]
+tftp-server url flash:/its/SEPABCDABCDABCD.cnf.xml alias SEPSEPABCDABCDABCD.cnf.xml
+[...]
+```
+
+Enable "term shell" to print the content of the file:
+```
+term shell
+cat its/SEPABCDABCDABCD.cnf.xml
+<device>
+<fullConfig>true</fullConfig>
+<deviceProtocol>SIP</deviceProtocol>
+<devicePool>
+<dateTimeSetting>
+<dateTemplate>D/M/Y</dateTemplate>
+<timeZone>E. Europe Standard/Daylight Time</timeZone>
 ```
 
 
