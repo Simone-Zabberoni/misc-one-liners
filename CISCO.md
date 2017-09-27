@@ -22,6 +22,56 @@ ip route 0.0.0.0 0.0.0.0 1.1.1.1
 ```
 
 
+## Local flash, tftp single and multiple file transfer 
+
+List the whole html directory of a switch:
+
+```
+TEST#dir html
+Directory of flash:/html/
+
+    8  -rwx        3994   Mar 01 1993 00:03:19  homepage.htm
+    9  -rwx        1392   Mar 01 1993 00:03:20  not_supported.html
+   10  -rwx        9529   Mar 01 1993 00:03:20  common.js
+   11  -rwx       22152   Mar 01 1993 00:03:20  cms_splash.gif
+[...]
+```
+
+Available commands for flash management: `more`, `mkdir`, `rename`, `delete`
+
+With the `archive` command we can transfer multiple files to a remote tftp server, creating a single .tar file
+
+```
+TEST#archive tar /create tftp://192.168.1.230/my_archive.tar flash:html
+[...]
+archiving redirect.htm (1018 bytes)
+archiving sslhome.shtml (6143 bytes)!
+archiving appsui.js (1389 bytes)!
+archiving stylesheet.css (8273 bytes)!
+[...]
+```
+
+Retrieve it and unpack it on the fly:
+
+```
+AnotherSwitch#archive tar /xtract tftp://192.168.1.230/my_archive.tar html
+Loading my_archive.tar from 192.168.1.230 (via Vlan1): !
+extracting redirect.htm (1018 bytes)
+extracting sslhome.shtml (6143 bytes)!
+extracting appsui.js (1389 bytes)!
+[...]
+```
+
+Use `copy` for single files:
+
+```
+copy tftp://192.168.1.230/c2950-i6q4l2-mz.121-22.EA4a.bin flash:
+Destination filename [c2950-i6q4l2-mz.121-22.EA4a.bin]?
+Accessing tftp://192.168.1.230/c2950-i6q4l2-mz.121-22.EA4a.bin...
+[...]
+```
+
+
 ## CUCM - Call Manager
 
 Create a phone number entry and bind it to a phone by mac address and model:
