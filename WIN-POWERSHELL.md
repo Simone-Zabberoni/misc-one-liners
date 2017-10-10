@@ -68,6 +68,18 @@ $datecutoff = (Get-Date).AddDays(-2)
 Get-ADComputer -Filter '( LastLogonDate -gt $datecutoff ) -and (OperatingSystem -notlike "*Server*") -and (OperatingSystem -notlike "OnTap")' -Property Name,LastLogonDate
 ```
 
+Get locked accounts and the bad logon count, excluding disabled and administrative accounts:
+
+```
+Search-ADAccount -Lockedout |where {$_.enabled -and $_.Name -NotLike "Admin*"} | ForEach-Object { get-aduser $_.samaccountname -property BadLogonCount | select Name, SamAccountName,BadLogonCount }
+
+Name                                    SamAccountName                                                    BadLogonCount
+----                                    --------------                                                    -------------
+John Smith                              JSMITH                                                                        2
+Some User                               SOMEUSE2                                                                      1
+```
+
+
 Search AD Object by name:
 
 Get-ADObject  -Filter {name -like "SOMEPC*"} | fl
