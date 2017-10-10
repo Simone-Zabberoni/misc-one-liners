@@ -57,3 +57,37 @@ Copy some local files to a specific remote directory:
 /usr/bin/smbclient //my_file_server/backups$ -A .smbaccess -c "lcd /some/local/dir/; cd RemoteDirectory; prompt; mput *"
 
 ```
+
+
+## Brutal FTP Upload
+
+```
+#!/bin/sh
+
+HOST='some-ftp-server'
+USER='my-username'
+PASSWD='uberpassword'
+
+
+ftp -n -v $HOST << EOT
+ascii
+user $USER $PASSWD
+prompt
+cd some-remote-directory
+lcd /my/local/backup/
+put backup.tar.gz
+ls -la
+bye
+EOT
+```
+
+
+
+
+
+
+
+
+
+
+
