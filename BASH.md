@@ -27,6 +27,40 @@ HTTP/1.1 200 Connection established
 [...]
 ```
 
+Send a UPnP SOAP request:
+
+```
+curl 'http://192.168.40.1:1990/control?WFAWLANConfig' \
+  -X 'POST' \
+  -H 'Content-Type: text/xml; charset="utf-8"' \
+  -H 'Connection: close' \
+  -H 'SOAPAction: "urn:schemas-wifialliance-org:service:WFAWLANConfig:1#GetDeviceInfo"' \
+  -d '<?xml version="1.0"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<s:Body>
+<u:GetDeviceInfo xmlns:u="urn:schemas-wifialliance-org:service:WFAWLANConfig:1">
+
+</u:GetDeviceInfo>
+</s:Body>
+</s:Envelope>'
+```
+
+```
+curl 'http://192.168.40.1:1990/control?WFAWLANConfig' \
+  -X 'POST' \
+  -H 'Content-Type: text/xml; charset="utf-8"' \
+  -H 'Connection: close' \
+  -H 'SOAPAction: "urn:schemas-wifialliance-org:service:WFAWLANConfig:1#GetAPSettings"' \
+  -d '<?xml version="1.0"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<s:Body>
+<u:GetAPSettings xmlns:u="urn:schemas-wifialliance-org:service:WFAWLANConfig:1">
+<NewMessage>GetAPSettings</NewMessage>
+</u:GetAPSettings>
+</s:Body>
+</s:Envelope>'
+```
+
 
 ## SSL
 
