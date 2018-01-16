@@ -259,6 +259,7 @@ line vty 0 15
 ### IpSec VPN using HSRP for resiliency
 
 Let's consider 2 router, with ip address 1.1.1.1 and 1.1.1.2 with HSRP ip 1.1.1.3, internal network 192.168.1.0/24
+
 Remote peer's ip address is 1.2.3.4, internal network 192.168.2.0/24
 
 Set the preshared key and the transform set:
