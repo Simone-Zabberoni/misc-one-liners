@@ -1,5 +1,7 @@
 # ASA, CUCM, switch and router useful commands
 
+Of course, all configuration commands must be entered afert a `conf term`
+
 
 ## Router DNS and NTP setup
 
@@ -209,7 +211,7 @@ Show group policy and tunnel group config:
 myAsaFw# show running-config group-policy
 group-policy GroupPolicy_1.2.3.4 internal
 group-policy GroupPolicy_1.2.3.4 attributes
- vpn-tunnel-protocol ikev1
+ my-vpn-acl-protocol ikev1
 
 myAsaFw# show running-config tunnel-group
 tunnel-group 1.2.3.4 type ipsec-l2l
@@ -241,3 +243,79 @@ crypto key generate rsa general-keys modulus 2048
 ssh scopy enable
 ssh 10.0.0.0 255.0.0.0 Internal
 ```
+
+
+## IOS XE
+
+### SSH on non-standard port
+
+```
+ip ssh port 8443 rotary 1
+line vty 0 15
+ rotary 1
+```
+
+
+### IpSec VPN using HSRP for resiliency
+
+Let's consider 2 router, with ip address 1.1.1.1 and 1.1.1.2 with HSRP ip 1.1.1.3, internal network 192.168.1.0/24
+Remote peer's ip address is 1.2.3.4, internal network 192.168.2.0/24
+
+Set the preshared key and the transform set:
+```
+crypto isakmp key my_preshared_key address 1.2.3.4
+
+crypto ipsec transform-set my-vpn-transformset esp-aes 256 esp-sha-hmac
+ mode transport
+```
+
+
+Create the vpn access list matching the local and the remote network:
+```
+ip access-list extended my-vpn-acl
+ permit ip 192.168.1.0 0.0.0.255 192.168.2.0 0.0.0.255 
+```
+
+Create crypto map to bind peer-acl-transformset:
+```
+crypto map my-crypto-map 1 ipsec-isakmp
+ set peer 1.2.3.4
+ set transform-set my-vpn-transformset
+ match address my-vpn-acl
+```
+
+**Important**: don't apply NAT on vpn packets:
+```
+ip access-list extended NAT_INSIDE_NETWORKS
+ deny   ip 192.168.1.0 0.0.0.255 192.168.2.0 0.0.0.255 
+ permit ip 192.168.1.0 0.0.0.255 any
+
+ip nat inside source list NAT_INSIDE_NETWORKS interface GigabitEthernet0/0/0 overload
+```
+
+Bind the crypto map to the WAN interface, using the HSRP ip address:
+
+```
+interface GigabitEthernet0/0/0
+ description WAN
+ ip address 1.1.1.1 255.255.255.248
+ ip nat outside
+ standby delay minimum 30 reload 60
+ standby 0 ip 1.1.1.3
+ standby 0 priority 110
+ standby 0 preempt
+ standby 0 name WAN-HSRP
+ negotiation auto
+ crypto map my-crypto-map redundancy WAN-HSRP
+```
+
+
+### Snmp with simple ACL
+
+Allow snmp RO access only from a specific network or host:
+
+```
+access-list 99 permit 192.168.1.0 0.0.0.255
+snmp-server community public RO 99
+```
+
