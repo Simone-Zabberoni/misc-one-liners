@@ -232,3 +232,42 @@ $cred  =  new-object  -typename  System.Management.Automation.PSCredential   -ar
 Backup-SqlDatabase  -ServerInstance   vcenter\SQLEXPRESS  -Database  VUMDB  -Credential  $cred  -BackupFile  "D:\backup\VUMDB.bak"  -BackupAction  Database
 Backup-SqlDatabase   -ServerInstance  vcenter\SQLEXPRESS  -Database  VCDB  -Credential  $cred  -BackupFile  "D:\backup\VCDB.bak"  -BackupAction  Database
 ```
+
+
+## Windows fileshare details
+
+
+Local:
+
+```
+Get-SmbShare
+
+Name                     Path                                      Description
+----                     ----                                      -----------
+print$                   C:\WINDOWS\system32\spool\drivers         Driver della stampante
+C$                       C:\                                       Condivisione predefinita
+IPC$                                                               IPC remoto
+ADMIN$                   C:\WINDOWS                                Amministrazione remota
+```
+
+
+For remote server with `Get-WmiObject`:
+
+```
+Get-WmiObject -Class Win32_Share -ComputerName someserver
+
+Name                     Path                                      Description
+----                     ----                                      -----------
+print$                   C:\WINDOWS\system32\spool\drivers         Driver della stampante
+C$                       C:\                                       Condivisione predefinita
+IPC$                                                               IPC remoto
+ADMIN$                   C:\WINDOWS                                Amministrazione remota
+```
+
+
+More tips on [http://powershell-guru.com/powershell-tip-89-list-shares-on-local-and-remote-computer/]
+
+
+
+
+
