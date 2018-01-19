@@ -17,11 +17,20 @@ ntp server pool.ntp.org
 
 ## Default gw
 
-Either one or the other:
+
+On a layer2 device:
 ```
 ip default-gateway 1.1.1.1
+```
+
+
+On a layer3 device with ip routing enabled:
+```
 ip route 0.0.0.0 0.0.0.0 1.1.1.1
 ```
+
+
+
 
 
 ## Local flash, tftp single and multiple file transfer 
