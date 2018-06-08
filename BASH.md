@@ -92,7 +92,6 @@ Copy some local files to a specific remote directory:
 
 ```
 
-
 ## Brutal FTP Upload
 
 ```
@@ -115,12 +114,19 @@ bye
 EOT
 ```
 
+## SCSI Rescan, lvm and stuff
 
+Rescan drives after resize (ie: Vmware disk extend)
+```
+echo "- - -" > /sys/class/scsi_host/host0/scan
+echo "- - -" > /sys/class/scsi_host/host1/scan	
+echo "- - -" > /sys/class/scsi_host/host2/scan
+```
 
-
-
-
-
+Extend a LV to 100% of the available space:
+```
+lvresize -l +100%FREE /dev/mysql/lv_mysql
+```
 
 
 
