@@ -123,6 +123,18 @@ echo "- - -" > /sys/class/scsi_host/host1/scan
 echo "- - -" > /sys/class/scsi_host/host2/scan
 ```
 
+or (use the correct bus id):
+
+```
+echo 1 > /sys/class/scsi_device/0\:0\:0\:0/device/rescan
+```
+
+Extend the PV to "see" the new available space:
+```
+pvresize /dev/sdb
+```
+
+
 Extend a LV to 100% of the available space:
 ```
 lvresize -l +100%FREE /dev/mysql/lv_mysql
