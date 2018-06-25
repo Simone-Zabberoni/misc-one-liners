@@ -82,8 +82,9 @@ Some User                               SOMEUSE2                                
 
 Search AD Object by name:
 
-Get-ADObject  -Filter {name -like "SOMEPC*"} | fl
+
 ```
+Get-ADObject  -Filter {name -like "SOMEPC*"} | fl
 DistinguishedName : CN=SOME,OU=Clients,OU=MyOrg.......
 Name              : SOMEPC
 ObjectClass       : computer
@@ -111,7 +112,7 @@ New-ADGroup -Name "New Group" -GroupScope Global -Path "OU=MyOU,DC=domin,DC=tld"
 
 Create groups from a text file, all in a specific OU:
 ```
-Get-Content .\groups.txt | ForEach-Object { New-ADGroup -Name "$_" -GroupScope Global -Path "OOU=MyOU,DC=domin,DC=tld" }
+Get-Content .\groups.txt | ForEach-Object { New-ADGroup -Name "$_" -GroupScope Global -Path "OU=MyOU,DC=domin,DC=tld" }
 ```
 
 
