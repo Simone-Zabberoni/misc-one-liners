@@ -183,6 +183,17 @@ Get SUBMIT events for "someone@domain.tld" with sorting, recipient expansion and
 Get-MessageTrackingLog -Server ExchangeSrv.domain.tld -Start "02/01/2016 00:00:00" -End "03/11/2016 00:00:00" -sender "someone@domain.tld" -resultsize unlimited -EventID SUBMIT| Sort TimeStamp | select timestamp,sender,@{Name=’recipients‘;Expression={[string]::join(“;”, ($_.recipients))}},messagesubject | Export-CSV c:\log\mails.csv
 ```
 
+Mailbox simple report:
+```
+get-mailbox | ft Name, PrimarySmtpAddress, SamAccountName
+
+Name                                    PrimarySmtpAddress                      SamAccountName
+----                                    ------------------                      --------------
+Administrator                           Administrator@something.it              Administrator
+Simone Zabberoni                        simone.zabberoni@something.it           szabberoni
+```
+
+
 
 Mailbox and transport send/recive size:
 ```
