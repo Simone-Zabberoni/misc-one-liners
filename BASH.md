@@ -141,5 +141,43 @@ lvresize -l +100%FREE /dev/mysql/lv_mysql
 ```
 
 
+## SNMP useful stuff
+
+Simple snmp scanner with custom range:
+
+```
+#!/bin/bash
+
+COMMUNITY="public"
+HOSTNAME_OID=".1.3.6.1.2.1.1.5.0"
+SNMP_VERSION="2c"
+
+# Set scanning range
+for ip in 172.16.{1..10}.{1..254}
+do
+    HOSTNAME="$(snmpget -v $SNMP_VERSION -c $COMMUNITY ${ip} $HOSTNAME_OID -r 2 -t 1 2>/dev/null | cut -d '=' -f 2 | cut -d ':' -f 2 | tr -d ' ')"
+
+    if [ ! -z $HOSTNAME ]; then
+        echo "${ip} $HOSTNAME"
+    fi
+
+done
+```
+
+Snmp route analysis:
+
+```
+# snmpwalk -c public -v2c 172.16.0.254 RFC1213-MIB::ipRouteNextHop | cut -d ' ' -f 4 | sort | uniq -c | sort
+1 172.16.0.1 SomeGW
+2 172.16.0.10 some other GW with 2 network behind
+6 172.16.0.20 MplsRouter
+```
+
+
+
+
+
+
+
 
 
