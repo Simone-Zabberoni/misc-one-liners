@@ -36,6 +36,36 @@ repadmin /showrepl
 
 
 
+## Remote management
+
+Connect to remote powershell from a machine in the same domain:
+
+```
+c:\Users\someone> Enter-PSSession -computername someComputer
+
+[someComputer] c:\Users\someone>
+```
+
+From a non-domain machine you need to setup trusted hosts (https://social.technet.microsoft.com/Forums/windowsserver/en-US/f4b79641-92cb-4aa7-8cd3-921853b9e0d5/using-enterpssession-on-lan-without-domain?forum=winserverpowershell) or use PsExec:
+
+```
+C:\Users\simone>psexec \\someServer -u myDom\s.zabberoni powershell
+
+PsExec v2.2 - Execute processes remotely
+Copyright (C) 2001-2016 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+Password: ---------
+
+Windows PowerShell
+Copyright (C) 2016 Microsoft Corporation. All rights reserved.
+
+PS C:\> hostname
+someServer
+```
+
+
+
 ## Active directory
 
 Import the AD module (install it from Windows Features):
