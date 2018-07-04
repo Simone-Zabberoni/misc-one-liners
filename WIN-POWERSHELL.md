@@ -206,7 +206,42 @@ Running  VMware NAT Service VMware NAT Service
 Running  VMwareHostd        VMware Workstation Server
 ```
 
+## JSON 
 
+Sample - Services to zabbix LLD discovery:
+
+```
+$result = @{}
+$result.data = @()
+
+Get-WmiObject Win32_Service -Filter "Name LIKE 'VmWare%'" | ForEach-Object { 
+    $result.data += @{
+        "{#PROCESS_ID}" = $_.ProcessId;
+        "{#SERVICE_NAME}" = $_.Name;
+        "{#SERVICE_STATUS}" =  $_.Status;
+    }
+} 
+
+$result | ConvertTo-Json
+```
+
+Result:
+```
+{
+    "data":  [
+                 {
+                     "{#SERVICE_NAME}":  "VMware NAT Service",
+                     "{#PROCESS_ID}":  4484,
+                     "{#SERVICE_STATUS}":  "OK"
+                 },
+                 {
+                     "{#SERVICE_NAME}":  "VMwareHostd",
+                     "{#PROCESS_ID}":  6256,
+                     "{#SERVICE_STATUS}":  "OK"
+                 }
+             ]
+}
+```
 
 
 
