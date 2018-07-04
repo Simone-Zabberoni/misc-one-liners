@@ -162,6 +162,32 @@ Count files in a directory:
 [System.IO.Directory]::GetFiles("c:\windows\temp", "*").Count
 ```
 
+Count files in a directory and subdirs (one liner for zabbix):
+```
+$queueFiles = get-childitem '{$QUEUE_DIR}' -File -Recurse; if ($queueFiles) { Write-host $queueFiles.Length } else { write-host 0 }
+```
+
+Count files in a directory and subdirs with CMD only:
+```
+@echo off
+for /f %%A in ('dir "%1"  /a-d-s-h /b /s ^| find /v /c ""') do set cnt=%%A
+echo %cnt%
+```
+
+Usage:
+```
+c:\somwhere>fileCount.bat
+3
+
+c:\somwhere>fileCount.bat c:\somwhere-else
+134
+```
+
+
+
+
+
+
 ## Exchange PowerShell
 
 Show received emails for someone@domain.tld:
