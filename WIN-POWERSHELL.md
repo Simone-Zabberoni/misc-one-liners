@@ -279,6 +279,34 @@ This is before
 ```
 
 
+## Performance counters
+
+**Important**: the counter names are dependant on the system language...
+
+Some samples:
+```
+Get-Counter '\processore(_total)\% tempo processore'
+
+Timestamp                 CounterSamples                                                                                      
+---------                 --------------                                                                                      
+04/07/2018 12:31:54       \\desktop-kp15lkb\processore(_total)\% tempo processore :                                           
+                          12,1488778645121                                                                                    
+
+(Get-Counter '\processore(_total)\% tempo processore').CounterSamples.CookedValue
+9,45587401333129        
+
+
+Get-Counter '\processo(chrome)\% tempo processore'
+
+Timestamp                 CounterSamples                                                                                      
+---------                 --------------                                                                                      
+04/07/2018 12:35:31       \\desktop-kp15lkb\processo(chrome)\% tempo processore :                                             
+                          4,67465125356445              
+                         
+```
+
+
+
 ## Exchange PowerShell
 
 Show received emails for someone@domain.tld:
