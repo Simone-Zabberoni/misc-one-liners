@@ -244,6 +244,40 @@ Result:
 ```
 
 
+## Regexp
+
+Basic extract sample:
+
+```
+$myString = "Hello, this is (betweet parenthesis) and this is outside"
+
+$r = [regex]"\((.*)\)"
+$match = $r.match($myString)
+Write-Host $match.groups[1].value
+```
+
+The script will output:
+```
+betweet parenthesis
+```
+
+## Basic string stuff
+
+Splitting: 
+```
+$myString = "This is before # and this is after"
+($before, $after) = $myString.Split('#');
+
+Write-Host $before
+Write-Host $after
+```
+
+The script will output:
+```
+This is before 
+ and this is after
+```
+
 
 ## Exchange PowerShell
 
