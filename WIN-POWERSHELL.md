@@ -183,6 +183,28 @@ c:\somwhere>fileCount.bat c:\somwhere-else
 134
 ```
 
+## Services
+
+With WMI:
+
+```
+Get-WmiObject Win32_Service -Filter "Name LIKE 'VmWare%'" | ft
+
+ExitCode Name               ProcessId StartMode State   Status
+-------- ----               --------- --------- -----   ------
+       0 VMware NAT Service      4484 Auto      Running OK
+       0 VMwareHostd             6256 Auto      Running OK
+```
+
+With get-service:
+```
+Get-Service -Name "VMware*"
+
+Status   Name               DisplayName
+------   ----               -----------
+Running  VMware NAT Service VMware NAT Service
+Running  VMwareHostd        VMware Workstation Server
+```
 
 
 
