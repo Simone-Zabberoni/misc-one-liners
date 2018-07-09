@@ -213,6 +213,11 @@ c:\somwhere>fileCount.bat c:\somwhere-else
 134
 ```
 
+Search strings inside all files of a path:
+```
+ls -r c:\somewhere -file | % {Select-String -path $_ -pattern 'string_pattern'}
+```
+
 ## Services
 
 With WMI:
@@ -415,6 +420,33 @@ Timestamp                 CounterSamples
                           4,67465125356445              
                          
 ```
+
+## Generic WMI one liners
+
+```
+Get-WmiObject -Class Win32_Bios | Format-List  *
+
+
+PSComputerName                 : DESKTOP-SOMETHING
+Status                         : OK
+Name                           : 0BIOS Version:0.38
+Caption                        : 0BIOS Version:0.38
+SMBIOSPresent                  : True
+```
+
+```
+Get-WmiObject -Class Win32_LogicalDisk | ft
+
+DeviceID DriveType ProviderName    FreeSpace         Size VolumeName
+-------- --------- ------------    ---------         ---- ----------
+C:               3              192219000832 440031830016
+D:               3                 812290048    827322368
+E:               5
+F:               3                 367546368    914354176
+X:               3                5021925376  21453586432
+```
+
+
 
 
 
