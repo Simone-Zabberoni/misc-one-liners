@@ -236,7 +236,7 @@ Running  VMware NAT Service VMware NAT Service
 Running  VMwareHostd        VMware Workstation Server
 ```
 
-## JSON 
+## JSON & Web Requests
 
 Sample - Services to zabbix LLD discovery:
 
@@ -272,6 +272,87 @@ Result:
              ]
 }
 ```
+
+InvokeWebRequest or wget (alias):
+
+```
+alias wget
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Alias           wget -> Invoke-WebRequest
+```
+
+Basic invocation:
+
+```
+ wget https://jsonplaceholder.typicode.com/users | ConvertFrom-Json
+
+id       : 1
+name     : Leanne Graham
+username : Bret
+email    : Sincere@april.biz
+address  : @{street=Kulas Light; suite=Apt. 556; city=Gwenborough; zipcode=92998-3874; geo=}
+phone    : 1-770-736-8031 x56442
+website  : hildegard.org
+company  : @{name=Romaguera-Crona; catchPhrase=Multi-layered client-server neural-net; bs=harness real-time e-markets}
+
+id       : 2
+name     : Ervin Howell
+username : Antonette
+email    : Shanna@melissa.tv
+address  : @{street=Victor Plains; suite=Suite 879; city=Wisokyburgh; zipcode=90566-7771; geo=}
+phone    : 010-692-6593 x09125
+website  : anastasia.net
+company  : @{name=Deckow-Crist; catchPhrase=Proactive didactic contingency; bs=synergize scalable supply-chains}
+
+[cut]
+```
+
+
+Print attribute values:
+
+```
+((wget https://jsonplaceholder.typicode.com/users) | ConvertFrom-Json).name
+Leanne Graham
+Ervin Howell
+Clementine Bauch
+[cut]
+```
+
+Select specific attributes (mind the parentheses):
+
+```
+ ((wget https://jsonplaceholder.typicode.com/users) | ConvertFrom-Json) | select name, username
+
+name                     username
+----                     --------
+Leanne Graham            Bret
+Ervin Howell             Antonette
+Clementine Bauch         Samantha
+Patricia Lebsack         Karianne
+[cut]
+```
+
+From json -> filter -> to json:
+
+```
+((wget https://jsonplaceholder.typicode.com/users) | ConvertFrom-Json) | Select-Object name,email | ConvertTo-Json
+[
+    {
+        "name":  "Leanne Graham",
+        "email":  "Sincere@april.biz"
+    },
+    {
+        "name":  "Ervin Howell",
+        "email":  "Shanna@melissa.tv"
+    },
+[cut]    
+```
+
+
+
+
 
 
 ## Regexp
