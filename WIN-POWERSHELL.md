@@ -356,7 +356,22 @@ From json -> filter -> to json:
 ```
 
 
+## Http redirection checking
 
+Use of `Invoke-WebRequest` without the automatic follow redirection to check step by step the flow:
+
+```
+Invoke-WebRequest http://some_site.com -MaximumRedirection 0 -erroraction 'silentlycontinue' | % { $_.StatusCode; $_.Headers.Location }
+302
+https://some_site.com/                         <- https redirection
+
+Invoke-WebRequest https://some_site.com -MaximumRedirection 0 -erroraction 'silentlycontinue' | % { $_.StatusCode; $_.Headers.Location }
+302
+https://some_site.com/index.php/login          <- uri redirection
+
+Invoke-WebRequest https://some_site.com/index.php/login -MaximumRedirection 0 -erroraction 'silentlycontinue' | % { $_.StatusCode; $_.Headers.Location }
+200                                            <- and we're done
+```
 
 
 
