@@ -5,6 +5,24 @@
 Good for rewrite rules: [http://htaccess.mwl.be/](http://htaccess.mwl.be/)
 
 
+## Where
+
+Rewrite rules can be applied in .haccess files or in configuration file.
+
+Example:
+
+```
+#  cat /etc/httpd/conf.d/global_rewrite.conf
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{HTTPS} off
+  RewriteRule ^/?(.*) https://%{HTTP_HOST}:/$1 [R,L]
+</IfModule>
+```
+
+
+## Examples
+
 Enable rewrite engine (duh):
 ```
 RewriteEngine on
