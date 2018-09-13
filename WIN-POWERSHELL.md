@@ -530,6 +530,20 @@ Get-mailbox | where {$_.ForwardingAddress -ne $Null}| ForEach-Object {
 ```
 
 
+Manage folder and shared calendar permissions:
+```
+Get-MailboxFolderPermission -Identity Simone.Zabberoni:\Calendario
+
+FolderName           User                 AccessRights
+----------           ----                 ------------
+Calendario           Default              {AvailabilityOnly}
+Calendario           Anonymous            {None}
+Calendario           Mario Rossi		  {Reviewer}
+
+
+Add-MailboxFolderPermission -Identity Simone.Zabberoni:\Calendario -User Segreteria.Tecnica  -AccessRights Editor
+
+```
 
 
 
