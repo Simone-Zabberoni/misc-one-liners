@@ -487,10 +487,16 @@ Get SUBMIT events for "someone@domain.tld" with sorting, recipient expansion and
 Get-MessageTrackingLog -Server ExchangeSrv.domain.tld -Start "02/01/2016 00:00:00" -End "03/11/2016 00:00:00" -sender "someone@domain.tld" -resultsize unlimited -EventID SUBMIT| Sort TimeStamp | select timestamp,sender,@{Name=’recipients‘;Expression={[string]::join(“;”, ($_.recipients))}},messagesubject | Export-CSV c:\log\mails.csv
 ```
 
-SMTP address filtered report - multiple conditions
+SMTP address filtered report - multiple conditions (with `if` and with `where`)
 ```
 Get-MessageTrackingLog -Start "08/31/2018 09:00:00" -End "08/31/2018 23:30:00" -Eventid "RECEIVE" | % {if (($_.Source -eq "SMTP") -and ($_.clientip -ne "183.93.34.216") -and -not ($_.clientip -like "192.168.*")   ) { $_  } } | ft clientip, Sender, Recipients, MessageSubject
+
+Get-MessageTrackingLog -Start "09/10/2018 09:00:00" -End "12/31/2018 23:30:00" -Eventid "RECEIVE" | where { (($_.Source -eq "SMTP") -and ($_.clientip -ne "183.93.34.216") -and -not ($_.clientip -like "192.168.*"))} | ft clientip, Sender, Recipients, MessageSubject
 ```
+
+
+
+
 
 Mailbox simple report:
 ```
