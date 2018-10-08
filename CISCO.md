@@ -30,7 +30,22 @@ ip route 0.0.0.0 0.0.0.0 1.1.1.1
 ```
 
 
+## Switch and SFP / GBIC informations
 
+```
+SomeSwitch# show inventory
+NAME: "1", DESCR: "IE-3010-16S-8PC"
+PID: IE-3010-16S-8PC   , VID: V02  , SN: xxxxxxxxx
+
+NAME: "Power Supply 1", DESCR: "FRU Power Supply"
+PID: PWR-RGD-AC-DC     , VID: V02  , SN: xxxxxxxxx
+
+NAME: "GigabitEthernet0/1", DESCR: "1000BaseSX SFP"
+PID: GLC-SX-MM-RGD       , VID: V02  , SN: xxxxxxxxx
+
+NAME: "FastEthernet0/1", DESCR: "100BaseFX-FE SFP"
+PID: GLC-FE-100FX        , VID: V02  , SN: xxxxxxxxx
+```
 
 
 ## Local flash, tftp single and multiple file transfer 
