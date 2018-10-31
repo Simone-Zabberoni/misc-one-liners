@@ -535,6 +535,31 @@ Get-mailbox | where {$_.ForwardingAddress -ne $Null}| ForEach-Object {
 }
 ```
 
+Extract mailboxes and size in MB (`TotalItemSize` format is ugly), sorted by `Display Name`
+```
+get-mailbox | Sort-Object -Property DisplayName | get-mailboxstatistics | % { write-host $_.displayname"; "$_.totalitemsize.value.toMB() }
+```
+
+Also with filter by server or database:
+```
+get-mailbox -Database MyDb | Sort-Object -Property DisplayName | get-mailboxstatistics | % { write-host $_.displayname"; "$_.totalitemsize.value.toMB() }
+
+get-mailbox -Server MyServer | Sort-Object -Property DisplayName | get-mailboxstatistics | % { write-host $_.displayname"; "$_.totalitemsize.value.toMB() }
+
+```
+
+Some details for a single mailbox
+```
+Get-MailboxStatistics someuser | fl DisplayName, Database, ServerName, LastLogonTime, LastLogoffTime, TotalItemSize
+
+DisplayName    : Some User
+Database       : db1
+ServerName     : SRV-xxx
+LastLogonTime  : 31/10/2018 03:01:57
+LastLogoffTime : 31/10/2018 03:05:57
+TotalItemSize  : 16.93 MB (17,749,891 bytes)
+```
+
 
 Manage folder and shared calendar permissions:
 ```
