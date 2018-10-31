@@ -582,6 +582,52 @@ Add-MailboxFolderPermission -Identity Simone.Zabberoni:\Calendario -User Segrete
 
 ### Move requests and reporting
 
+Move request, check status and remove once completed:
+
+```
+New-MoveRequest -Identity 'someone@domain.tld' -TargetDatabase "NewDB"
+
+Get-MoveRequest SomeOne
+
+DisplayName Status     TargetDatabase
+----------- ------     --------------
+SomeOne     InProgress NewDB
+
+
+Get-MoveRequestStatistics someone
+
+DisplayName StatusDetail TotalMailboxSize            TotalArchiveSize PercentComplete
+----------- ------------ ----------------            ---------------- ---------------
+someone     Completed    16.42 MB (17,215,643 bytes)                  100
+
+
+Remove-MoveRequest -Identity "someone@domain.tld"
+
+Confirm
+Are you sure you want to perform this action?
+Removing completed move request "someone".
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [?] Help (default is "Y"): y
+```
+
+
+InProgress move request report:
+
+```
+Get-MoveRequest  -MoveStatus InProgress | Get-MoveRequestStatistics | Sort-Object -Property PercentComplete -Descending
+
+DisplayName        StatusDetail                   TotalMailboxSize               TotalArchiveSize PercentComplete
+-----------        ------------                   ----------------               ---------------- ---------------
+Marco Martinini    CopyingMessages                4.068 GB (4,367,760,459 bytes)                  94
+Filippo Paccassoni CopyingMessages                5.371 GB (5,766,972,360 bytes)                  94
+jasmine corapi     StalledDueToTarget_Processor   4.35 GB (4,670,294,096 bytes)                   89
+Giacomo Angelini   StalledDueToTarget_Processor   4.405 GB (4,730,097,638 bytes)                  88
+Giampaolo Zanelli  StalledDueToTarget_DiskLatency 3.353 GB (3,600,025,381 bytes)                  87
+Jimi Siliquini     CopyingMessages                5.124 GB (5,502,236,003 bytes)                  78
+```
+
+Note: stalled status are usually temporary, depending on the load of the target system
+
+
 
 
 
