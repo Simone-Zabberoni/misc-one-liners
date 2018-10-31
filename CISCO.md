@@ -3,14 +3,19 @@
 Of course, all configuration commands must be entered afert a `conf term`
 
 
-## Router DNS and NTP setup
-
+## Router DNS
+Enable ip domain lookup, domain name search and dns servers
 ```
+ip domain lookup
 ip domain-name mydomain.org
 ip name-server 1.1.1.1
 ip name-server 1.1.1.2
-
+```
+## NTP setup
+Setup timezone, summer time and ntp server
+```
 clock timezone CET +1
+clock summer-time CET recurring last Sun Mar 2:00 last Sun Oct 3:00
 ntp server pool.ntp.org
 ```
 
