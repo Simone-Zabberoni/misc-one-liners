@@ -617,12 +617,12 @@ Get-MoveRequest  -MoveStatus InProgress | Get-MoveRequestStatistics | Sort-Objec
 
 DisplayName        StatusDetail                   TotalMailboxSize               TotalArchiveSize PercentComplete
 -----------        ------------                   ----------------               ---------------- ---------------
-Marco Martinini    CopyingMessages                4.068 GB (4,367,760,459 bytes)                  94
-Filippo Paccassoni CopyingMessages                5.371 GB (5,766,972,360 bytes)                  94
-jasmine corapi     StalledDueToTarget_Processor   4.35 GB (4,670,294,096 bytes)                   89
-Giacomo Angelini   StalledDueToTarget_Processor   4.405 GB (4,730,097,638 bytes)                  88
-Giampaolo Zanelli  StalledDueToTarget_DiskLatency 3.353 GB (3,600,025,381 bytes)                  87
-Jimi Siliquini     CopyingMessages                5.124 GB (5,502,236,003 bytes)                  78
+***************    CopyingMessages                4.068 GB (4,367,760,459 bytes)                  94
+***************    CopyingMessages                5.371 GB (5,766,972,360 bytes)                  94
+***************    StalledDueToTarget_Processor   4.35 GB (4,670,294,096 bytes)                   89
+***************    StalledDueToTarget_Processor   4.405 GB (4,730,097,638 bytes)                  88
+***************    StalledDueToTarget_DiskLatency 3.353 GB (3,600,025,381 bytes)                  87
+***************    CopyingMessages                5.124 GB (5,502,236,003 bytes)                  78
 ```
 
 Note: stalled status are usually temporary, depending on the load of the target system
