@@ -467,6 +467,8 @@ X:               3                5021925376  21453586432
 
 ## Exchange PowerShell
 
+### Tracking log and mail flow
+
 Show received emails for someone@domain.tld:
 ```
 Get-MessageTrackingLog -Start "03/1/2015 00:00:00" -End "03/23/2015 17:00:00" -Eventid "RECEIVE"  -Sender "someone@domain.tld" | format-table Timestamp,Recipients
@@ -495,7 +497,7 @@ Get-MessageTrackingLog -Start "09/10/2018 09:00:00" -End "12/31/2018 23:30:00" -
 ```
 
 
-
+### Mailbox status and reporting
 
 
 Mailbox simple report:
@@ -560,6 +562,7 @@ LastLogoffTime : 31/10/2018 03:05:57
 TotalItemSize  : 16.93 MB (17,749,891 bytes)
 ```
 
+### Permissions
 
 Manage folder and shared calendar permissions:
 ```
@@ -575,6 +578,10 @@ Calendario           Mario Rossi		  {Reviewer}
 Add-MailboxFolderPermission -Identity Simone.Zabberoni:\Calendario -User Segreteria.Tecnica  -AccessRights Editor
 
 ```
+
+
+### Move requests and reporting
+
 
 
 
