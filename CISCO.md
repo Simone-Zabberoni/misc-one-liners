@@ -19,6 +19,11 @@ clock summer-time CET recurring last Sun Mar 2:00 last Sun Oct 3:00
 ntp server pool.ntp.org
 ```
 
+Check the current time:
+```
+my_router# show clock
+09:31:16.613 CET Wed Oct 24 2018
+```
 
 ## Default gw
 
