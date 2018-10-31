@@ -95,3 +95,165 @@ Column #4 - CPU usage (%)
 Column #5 - Memory usage (%)
 ```
 
+
+## VTEP / VXLAN setup - in progress
+
+### Informations
+
+At the time (31/10/2018) there isn't any kb or clear article for the following scenario.
+The following setup comes from experimentation and a ticket with FG support.
+
+Scenario
+- 2 FG cluster (HQ and Branch)
+- 2 WANs per site
+
+Desiderata
+- multiple VXLAN tunnel HQ-Branch
+- encryption on transit 
+- WAN balancing for failover
+
+ToDo list
+- [x] document the proposed setup
+- [ ] implement and test without OSPF
+- [ ] implement and test with OSPF
+- [ ] implement and test with vlan interface (dot1q)
+
+
+### Proposed solution
+
+The solution breaks down to these components:
+- FG-to-GW ipsec in `transport-mode` (http://kb.fortinet.com/kb/documentLink.do?externalID=FD31874)
+- ipsec WAN redundancy (https://docs.fortinet.com/uploaded/files/4298/fortigate-ipsecvpn-60.pdf)
+- n VXLANs bound to the ipsec port 
+- n Virtual Wire Pair to bind VXLANs to their phisical ports (https://help.fortinet.com/fos50hlp/54/Content/FortiOS/fortigate-whats-new-54/Top_VirtualWirePair.htm)
+
+Some other pointers
+- Ipsec in tunnel mode and virtual switch - https://travelingpacket.com/2017/09/28/fortigate-vxlan-encapsulation/
+- ipsec, dot1q and custom interfaces - https://forum.fortinet.com/tm.aspx?m=168042
+
+
+
+### Scenario details
+
+Assumptions:
+- VXLAN will bind phyiscal ports, not vlan interfaces (see ToDo)
+- Specular configuration (network 192.168.x.y is connected to PortX on both FG)
+
+Ip addresses
+```
+FG1 WAN1: 203.0.113.1
+FG1 WAN2: TBD
+
+FG2 WAN2: 203.0.113.2 
+FG2 WAN2: TBD
+```
+
+Network/Port/VXLAN mappings
+```
+Network            FG physical port    VXLAN ID      
+--------------     --------------      --------------
+192.168.25.0/24    Port2               25
+192.168.35.0/24    Port3               35
+192.168.45.0/24    Port4               45
+```
+
+### Sample - without OSPF, single WAN
+
+Ipsec configuration
+```
+config vpn ipsec phase1-interface 
+  edit "ipsec1" 
+    set interface "wan1" 
+    set peertype any 
+    set proposal aes128-sha1 
+    set remote-gw 203.0.113.2 
+    set psksecret ENC 
+  next 
+end 
+
+config vpn ipsec phase2-interface 
+  edit "ipsec1" 
+    set phase1name "ipsec1" 
+    set proposal aes128-sha1 
+    set auto-negotiate enable 
+    set encapsulation transport-mode 
+  next 
+end 
+```
+
+VXLAN configuration
+```
+config system vxlan 
+  edit "vxlan_port_25" 
+    set interface "ipsec" 
+    set vni 25 
+    set remote-ip "203.0.113.2" 
+  next 
+end 
+
+config system vxlan 
+  edit "vxlan_port_35" 
+    set interface "ipsec" 
+    set vni 35 
+    set remote-ip "203.0.113.2" 
+  next 
+end 
+
+config system vxlan 
+  edit "vxlan_port_45" 
+    set interface "ipsec" 
+    set vni 45 
+    set remote-ip "203.0.113.2" 
+  next 
+end 
+```
+
+
+Virtual wire pairs
+```
+config system virtual-wire-pair
+  edit vxlan25_port2-VWP
+    set member port2 vxlan_port_25
+end
+
+config system virtual-wire-pair
+  edit vxlan35_port3-VWP
+    set member port3 vxlan_port_35
+end
+
+config system virtual-wire-pair
+  edit vxlan45_port4-VWP
+    set member port4 vxlan_port_45
+end
+```
+
+
+
+
+### Complete solution - TBD
+[Todo]
+
+
+### Trunk port support - TBD
+
+In virtual wire pairs the `wildcard-vlan enable` directive will enable the flow of tagged frames.
+In theory this will simplify the setup, **if** the VXLAN permits the flow of tagged frames, by using a single VXLAN over ipsec to carry al VLANS.
+```
+Switch_Trunk_Port -> FG dot1q port -> VXLAN ===ipsec=== VXLAN -> FG dot1q port -> Switch_Trunk_Port 
+```
+
+This is **UNSUPPORTED** in FortiOS 5.4 (http://kb.fortinet.com/kb/documentLink.do?externalID=FD40170) but should be possibile on FortiOS 6 with `set vlanforward enable` or `set wildcard-vlan enable`
+
+**Confirmation needed**
+
+Possible virtual pair
+```
+config system virtual-wire-pair
+  edit trunk-to-VXLAN-VWP
+    set member port2 vxlan_all
+    set wildcard-vlan enable
+end
+```
+
+
+
