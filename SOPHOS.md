@@ -166,3 +166,11 @@ MyVpnTunnel           192.168.1.0         255.255.255.0
 
 And now the traffic will work on both directions.
 As of June 2017 there is no way to debug and fix this through the web interface
+
+## SSL VPN restart
+
+The `Restart VPN Service` menu voice does restart IPSEC but not SSL VPNs, use:
+
+```
+service -ds nosync sslvpn:restart
+```
