@@ -3,16 +3,29 @@
 
  ## Positional matching
 
-Simple positional extraction:
+Simple positional extraction, a little crude:
 
 ```
 String:	HP J9148A 2910al-48G-PoE Switch, revision W.15.12.0011, ROM W.14.06  (Formerly ProCurve)
 
 Regex:	([^ ]+ +){2}.*
-Match:	J9148A
+Match:	`J9148A `
 
 Regex:	([^ ]+ +){6}.*
-Match:	W.15.12.0011, 
+Match:	`W.15.12.0011, `
+```
+
+Better approach, with 2 capturing groups (lazy) to exclude multiple delimiters (, and space in the example):
+```
+String:	HP J9148A 2910al-48G-PoE Switch, revision W.15.12.0011, ROM W.14.06  (Formerly ProCurve)
+
+Regex:              ((.+?)([, ]+|$)){6}.*
+Capturing Group 1:  `W.15.12.0011, `        <- mind the , and the space
+Capturing Group 1:  `W.15.12.0011`          <- that's good!
+
+Regex:              ((.+?)([, ]+|$)){3}.*
+Capturing Group 1:  `2910al-48G-PoE, `      <- mind the , and the space
+Capturing Group 1:  `2910al-48G-PoE`        <- that's good!
 ```
 
 
