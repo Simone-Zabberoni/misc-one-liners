@@ -145,6 +145,25 @@ Create groups from a text file, all in a specific OU:
 Get-Content .\groups.txt | ForEach-Object { New-ADGroup -Name "$_" -GroupScope Global -Path "OU=MyOU,DC=domin,DC=tld" }
 ```
 
+Active directory groups and user report:
+```
+$output = @()
+
+Get-ADGroup -Filter 'GroupCategory -eq "Security"' |   foreach-object {
+ $groupName = $_.name;
+ $outline = $groupname + "--,";
+
+ Get-ADGroupMember $_.DistinguishedName | ForEach-Object {
+    
+    if ($_.objectClass -eq "user") { $outline += $_.Name+", " }
+ } 
+ $output += $outline
+
+} 
+
+$output | Out-File group-users.txt
+```
+
 
 ## NTP
 
