@@ -550,9 +550,15 @@ MaxSendSize                                                 MaxReceiveSize
 
 Get ForwardingAddress of every mailbox, if set:
 ```
-Get-mailbox | where {$_.ForwardingAddress -ne $Null}| ForEach-Object {
-  $ema = Get-Recipient $_.ForwardingAddress
-  write-host $_.DisplayName"; " $ema.EmailAddresses
+Get-mailbox | where {$_.ForwardingAddress -ne $Null} | ForEach-Object {
+  $mainAddress = $_.DisplayName;
+  $forwarders = Get-Recipient $_.ForwardingAddress;
+  write-host -NoNewLine $mainAddress"-> "
+
+  $forwarders.EmailAddresses | ForEach-Object {
+    if ($_.Prefix.PrimaryPrefix -eq 'SMTP') { write-host -NoNewLine $_.SmtpAddress", " }
+  }
+  write-host ""
 }
 ```
 
