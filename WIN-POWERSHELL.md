@@ -375,6 +375,53 @@ From json -> filter -> to json:
 ```
 
 
+## Zabbix API access via powershell
+
+Sample authentication and query:
+
+```
+if(!$credential){
+    $credential = Get-Credential
+}
+$baseurl = 'https://zabbix.somwhere.it/zabbix'
+
+$params = @{
+    body =  @{
+        "jsonrpc"= "2.0"
+        "method"= "user.login"
+        "params"= @{
+            "user"= $credential.UserName
+            "password"= $credential.GetNetworkCredential().Password
+        }
+        "id"= 1
+        "auth"= $null
+    } | ConvertTo-Json
+    uri = "$baseurl/api_jsonrpc.php"
+    headers = @{"Content-Type" = "application/json"}
+    method = "Post"
+}
+
+$result = Invoke-WebRequest @params
+
+$params.body = @{
+    "jsonrpc"= "2.0"
+    "method"= "host.get"
+    "params"= @{
+        output = @( "host", "hostid", "status" )
+	selectInterfaces = @( "interfaceid", "ip", "dns", "useip" )
+    }
+    auth = ($result.Content | ConvertFrom-Json).result
+    id = 2
+} | ConvertTo-Json
+
+$result = Invoke-WebRequest @params
+$result = $result.Content | ConvertFrom-Json
+
+
+$result.result
+```
+
+
 ## Http redirection checking
 
 Use of `Invoke-WebRequest` without the automatic follow redirection to check step by step the flow:
