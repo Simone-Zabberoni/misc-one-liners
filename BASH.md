@@ -207,7 +207,12 @@ zmprov dd somedomain
 ```
 
 
+## Git
 
+Search for deletions:
+```
+git log --diff-filter=D --summary
+```
 
 
 
