@@ -27,6 +27,30 @@ HTTP/1.1 200 Connection established
 [...]
 ```
 
+Curl to Zabbix API with JSON post:
+```
+# curl -i -X POST -H 'Content-type:application/json' \
+   -d '{"jsonrpc":"2.0","method":"user.login", \
+   "params":{ "user":"youruser","password":"somepassword"},"auth":null,"id":0}' \
+   http://some-zabbix-server/api_jsonrpc.php
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 21 Jan 2019 19:17:55 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Keep-Alive: timeout=20
+X-Powered-By: PHP/7.1.17
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type
+Access-Control-Allow-Methods: POST
+Access-Control-Max-Age: 1000
+
+{"jsonrpc":"2.0","result":"xxxxxxxxxxxxxxxxx","id":0}
+```
+
+
 Send a UPnP SOAP request:
 
 ```
