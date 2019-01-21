@@ -29,7 +29,7 @@ HTTP/1.1 200 Connection established
 
 Curl to Zabbix API with JSON post:
 ```
-# curl -i -X POST -H 'Content-type:application/json' \
+curl -i -X POST -H 'Content-type:application/json' \
    -d '{"jsonrpc":"2.0","method":"user.login", \
    "params":{ "user":"youruser","password":"somepassword"},"auth":null,"id":0}' \
    http://some-zabbix-server/api_jsonrpc.php
@@ -196,6 +196,16 @@ Snmp route analysis:
 2 172.16.0.10 some other GW with 2 network behind
 6 172.16.0.20 MplsRouter
 ```
+
+## Zimbra commandline management
+
+Fast domain deletion: get all accounts and delete them, then delete the domain
+
+```
+zmprov -l getAllAccounts somedomain.it  | xargs -I {} zmprov da {};
+zmprov dd somedomain
+```
+
 
 
 
