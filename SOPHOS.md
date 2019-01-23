@@ -174,3 +174,25 @@ The `Restart VPN Service` menu voice does restart IPSEC but not SSL VPNs, use:
 ```
 service -ds nosync sslvpn:restart
 ```
+
+## HA commands
+
+Check details:
+```
+console> system ha show details
+ HA status              : Enabled
+ Current Appliance Key  : xxxxxxxxxxxxxxx
+ Peer Appliance Key     : xxxxxxxxxxxxxxx
+ Current HA state       : Primary
+ Peer HA state          : Auxiliary
+ HA Config Mode         : Active-Passive
+ Load Balancing         : Not Applicable
+ Dedicated Port         : Port6
+ Current Dedicated IP   : 172.16.253.253
+ Peer Dedicated IP      : 172.16.253.254
+ Monitoring Port        : Port1
+ Auxiliary Admin Port   : Port1
+ Auxiliary Admin IP     : 172.17.4.253
+ Auxiliary Admin IPv6   :
+```
+
