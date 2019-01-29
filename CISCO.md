@@ -124,6 +124,14 @@ Accessing tftp://192.168.1.230/c2950-i6q4l2-mz.121-22.EA4a.bin...
 [...]
 ```
 
+## Update image
+
+Use the already mentioned `archive` command:
+
+```
+archive download-sw  /overwrite /reload tftp://1.2.3.4/c2960-lanbasek9-tar.150-2.SE11.tar
+```
+
 
 ## CUCM - Call Manager
 
