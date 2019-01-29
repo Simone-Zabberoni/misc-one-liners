@@ -57,6 +57,23 @@ NAME: "FastEthernet0/1", DESCR: "100BaseFX-FE SFP"
 PID: GLC-FE-100FX        , VID: V02  , SN: xxxxxxxxx
 ```
 
+## GBIC compatibiliy bypass - warranty breaker!
+
+Using old/unsupported/chinese GBICs could yeald:
+
+```
+%PLATFORM_PM-6-MODULE_ERRDISABLE: The inserted SFP module with interface name Gix/y/z is not supported
+%PM-4-ERR_DISABLE: gbic-invalid error detected on Gix/y/z, putting Gix/y/z in err-disable state
+```
+
+Use the hidden command to bypass the check, but also voids any support/maintenance
+
+```
+service unsupported-transceiver
+no errdisable detect cause gbic-invalid
+no errdisable detect cause all
+```
+
 
 ## Local flash, tftp single and multiple file transfer 
 
