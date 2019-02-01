@@ -700,6 +700,25 @@ DisplayName        StatusDetail                   TotalMailboxSize              
 Note: stalled status are usually temporary, depending on the load of the target system
 
 
+### Export requests to PST
+
+Move request, check status and remove once completed:
+
+```
+New-ManagementRoleAssignment -Role "Mailbox Import Export" -User "Administrator"
+New-MailboxExportRequest -Mailbox name.surname -FilePath \\unc\path\to\file.pst
+```
+
+The request runs in background, to check it:
+
+```
+Get-MailboxExportRequest -status inprogress
+Get-MailboxExportRequest -status Queued
+```
+
+
+
+
 
 
 
