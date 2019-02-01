@@ -716,6 +716,12 @@ Get-MailboxExportRequest -status inprogress
 Get-MailboxExportRequest -status Queued
 ```
 
+### Distribution membership checker
+
+```
+$Username = "Name Surname"
+Get-DistributionGroup | where { (Get-DistributionGroupMember $_.Name | foreach {$_.Name}) -contains "$Username"}
+```
 
 
 
