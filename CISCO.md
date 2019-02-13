@@ -57,6 +57,79 @@ NAME: "FastEthernet0/1", DESCR: "100BaseFX-FE SFP"
 PID: GLC-FE-100FX        , VID: V02  , SN: xxxxxxxxx
 ```
 
+## DHCP Setup
+
+**Important** : configure a VLAN interface with a matching ip address to enable the scope!
+
+```
+ip dhcp excluded-address 10.10.0.1 10.10.0.20
+ip dhcp excluded-address 10.10.20.1 10.10.20.20
+ip dhcp excluded-address 10.10.30.1 10.10.30.20
+!
+ip dhcp pool 0-dhcp
+ network 10.10.0.0 255.255.255.0
+ default-router 10.10.0.10
+ dns-server 8.8.8.8
+!
+ip dhcp pool 20-dhcp
+ network 10.10.20.0 255.255.255.0
+ default-router 10.10.20.10
+ dns-server 8.8.8.8
+!
+ip dhcp pool 30-dhcp
+ network 10.10.30.0 255.255.255.0
+ default-router 10.10.30.10
+ dns-server 8.8.8.8
+```
+
+## Spanning tree stuff
+
+STP engine
+```
+spanning-tree mode { pvst | mst | rapid-pvst }
+```
+
+Root and priority
+
+```
+spanning-tree vlan 1-4094 root  primary 
+spanning-tree vlan 1-4094 priority 4096
+```
+
+Show
+```
+show spanning-tree summary
+show spanning-tree interface interface-id
+```
+
+Disable on specific vlan
+```
+no spanning-tree vlan 1
+```
+
+## LACP
+Configure
+```
+Switch(config)# interface range gigabitethernet0/1 -2
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 10
+Switch(config-if-range)# channel-group 5 mode active
+Switch(config-if-range)# end
+```
+Balancing engine:
+```
+port-channel load-balance { dst-ip | dst-mac | src-dst-ip | src-dst-mac | src-ip | src-mac }
+```
+
+Status
+```
+show etherchannel [ channel-group-number { detail | port | port-channel | protocol | summary }] { detail | load-balance | port | port-channel | protocol | summary }
+
+show lacp [channel-group-number] {counters | internal | neighbor}
+```
+
+
+
 ## GBIC compatibiliy bypass - warranty breaker!
 
 Using old/unsupported/chinese GBICs could yeald:
