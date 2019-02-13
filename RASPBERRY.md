@@ -71,5 +71,21 @@ camera.image_effect = 'watercolor'
 #camera.image_effect = 'oilpaint'
 ```
 
+---
 
+## OpenCV
+
+Setup documentation:
+- https://www.pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/
+
+Surveillance sample:
+- https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
+- https://www.pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/
+
+Launch sample from virtual env:
+```
+source /usr/local/bin/virtualenvwrapper.sh
+workon cv
+python pi_surveillance.py -c conf.json
+```
 
