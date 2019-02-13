@@ -40,3 +40,36 @@ static ip_address=10.10.30.10/24
 [...]
 ```
 
+---
+
+## Raspicam with python PiCamera
+
+Documentation: 
+- https://picamera.readthedocs.io/en/release-1.10/api_camera.html
+- https://www.raspberrypi.org/documentation/raspbian/applications/camera.md
+- https://www.raspberrypi.org/documentation/hardware/camera/README.md
+- https://www.raspberrypi.org/documentation/configuration/camera.md
+
+
+### Sample live preview 
+
+```
+from picamera import PiCamera
+from time import sleep
+
+camera = PiCamera()
+
+camera.start_preview(fullscreen=False,window=(0,0,600,800))
+
+camera.exposure_compensation = 10
+camera.brightness = 50
+camera.contrast = 50
+
+camera.zoom= (0.15, 0.40, 0.5, 0.5)
+
+camera.image_effect = 'watercolor'
+#camera.image_effect = 'oilpaint'
+```
+
+
+
