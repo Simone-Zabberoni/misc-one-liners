@@ -237,6 +237,28 @@ Search strings inside all files of a path:
 ls -r c:\somewhere -file | % {Select-String -path $_ -pattern 'string_pattern'}
 ```
 
+## File operation with long paths (> 260 chars)
+**Important**: `get-childitem` and `cmd` can't handle long path.
+Robocopy with `/L` and `NULL` workaround will handle long path without copying anything.
+
+Search for all PST files:
+
+```
+$FolderPath = '\\some-server\some-share'
+robocopy $FolderPath NULL *.pst /L /E /MT:128 /FP /NP /TEE /NJH /NJS /NC /NDL /NS /R:0 /W:0 /XJ  /XD *~snapshot* 
+```
+
+Search for all PST files, exclude FAS snapshot from the search (`/XD`)
+
+```
+$FolderPath = '\\some-server\some-share'
+robocopy $FolderPath NULL *.pst /L /E /MT:128 /FP /NP /TEE /NJH /NJS /NC /NDL /NS /R:0 /W:0 /XJ  /XD *~snapshot* 
+```
+
+**Important**: robocopy will always output `100%          \path\to\file`, which should NOT be there because of the `/NP` switch.
+But it clashes with the multithreading `/MT` switch, so you can remove the `/MT` switch for better output but lower speed.
+
+
 ## Services
 
 With WMI:
