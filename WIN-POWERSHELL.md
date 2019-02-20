@@ -245,7 +245,7 @@ Search for all PST files:
 
 ```
 $FolderPath = '\\some-server\some-share'
-robocopy $FolderPath NULL *.pst /L /E /MT:128 /FP /NP /TEE /NJH /NJS /NC /NDL /NS /R:0 /W:0 /XJ  /XD *~snapshot* 
+robocopy $FolderPath NULL *.pst /L /E /MT:128 /FP /NP /TEE /NJH /NJS /NC /NDL /NS /R:0 /W:0 /XJ
 ```
 
 Search for all PST files, exclude FAS snapshot from the search (`/XD`)
