@@ -57,6 +57,50 @@ NAME: "FastEthernet0/1", DESCR: "100BaseFX-FE SFP"
 PID: GLC-FE-100FX        , VID: V02  , SN: xxxxxxxxx
 ```
 
+## Vlan interfaces
+
+**Important** : all VLAN interfaces other than the default are in shutdown state when created
+
+```
+interface Vlan1
+ ip address 10.10.1.1 255.255.255.0
+!
+interface Vlan10
+ ip address 10.10.10.1 255.255.255.0
+ no shutdown
+!
+interface Vlan20
+ ip address 10.10.20.1 255.255.255.0
+ no shutdown
+```
+
+## Telnet/SSH authentication with local accounts
+
+Create the account:
+```
+username myAdmin privilege 15 password 0 somePassword
+```
+
+Bind the VTYs to the local accounting:
+
+```
+line vty 0 4
+ login local
+line vty 5 15
+ login local
+```
+
+## Full access port sample - access vlan with portfast and voice vlan
+```
+interface FastEthernet0/2
+ switchport access vlan 22
+ switchport mode access
+ switchport voice vlan 21
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+```
+
 ## DHCP Setup
 
 **Important** : configure a VLAN interface with a matching ip address to enable the scope!
@@ -107,8 +151,15 @@ Disable on specific vlan
 no spanning-tree vlan 1
 ```
 
+Portfast - use on access port pnly
+```
+interface FastEthernet0/1
+ spanning-tree portfast
+```
+
+
 ## LACP
-Configure
+Configure an access port:
 ```
 Switch(config)# interface range gigabitethernet0/1 -2
 Switch(config-if-range)# switchport mode access
@@ -116,6 +167,19 @@ Switch(config-if-range)# switchport access vlan 10
 Switch(config-if-range)# channel-group 5 mode active
 Switch(config-if-range)# end
 ```
+Configure a trunk port
+```
+Switch(config)# interface range gigabitethernet0/1 -2
+Switch(config-if-range)# switchport mode trunk
+Switch(config-if-range)# channel-group 10 mode active
+Switch(config-if-range)# end
+
+
+interface Port-channel10
+ switchport mode trunk
+
+```
+
 Balancing engine:
 ```
 port-channel load-balance { dst-ip | dst-mac | src-dst-ip | src-dst-mac | src-ip | src-mac }
