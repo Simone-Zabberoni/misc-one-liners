@@ -516,3 +516,25 @@ access-list 99 permit 192.168.1.0 0.0.0.255
 snmp-server community public RO 99
 ```
 
+## Cisco 9200/9300
+
+### Recovery from usb after factory reset
+
+From bios boot via USB:
+```
+switch: set BOOT=usbflash0:/cat9k_lite_iosxe.16.10.01.SPA.bin
+switch: boot
+boot: attempting to boot from [usbflash0:/cat9k_lite_iosxe.16.10.01.SPA.bin]
+boot: reading file /cat9k_lite_iosxe.16.10.01.SPA.bin
+##############################################################################################################
+```
+
+Copy the OS on flash and set it as boot image:
+```
+copy usbflash0:/cat9k_lite_iosxe.16.10.01.SPA.bin flash:
+
+conf t
+boot system flash:cat9k_lite_iosxe.16.10.01.SPA.bin
+reload
+```
+
