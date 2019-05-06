@@ -1,9 +1,9 @@
 # php useful stuff
 
-
-
 ## php unzipper
-For webhost without  shell access
+
+For webhost without shell access
+
 ```
 <?php
   $unzip = new ZipArchive;
@@ -15,5 +15,27 @@ For webhost without  shell access
   } else {
     echo 'Unzip ERR';
   }
+?>
+```
+
+## simple mail send
+
+```
+<?PHP
+$sender = 'szabberoni@tomware.it';
+$recipient = 'simone.zabberoni@gmail.com';
+
+$subject = "php mail test";
+$message = "php test message";
+$headers = 'From:' . $sender;
+
+if (mail($recipient, $subject, $message, $headers))
+{
+    echo "Message accepted";
+}
+else
+{
+    echo "Error: Message not accepted";
+}
 ?>
 ```
