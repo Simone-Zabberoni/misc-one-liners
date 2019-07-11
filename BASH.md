@@ -3,24 +3,27 @@
 ## Find, sed and similar
 
 Search for pattern in all php files, remove any file that matches:
+
 ```
 find /var/www -name '*.php*' -exec grep -l '$GLOBALS.*="\\x' {} \; -exec rm -f {} \;
 ```
 
 Search for pattern in all php files, remove only the matching line from the files:
+
 ```
 find /var/www -name '*.php*' -exec grep -l '\@assert(base64_decode(\$_REQUEST\["array"\]' {} \; -exec sed -i '/\@assert(base64_decode(\$_REQUEST\["array"\]/d' {} \;
 ```
 
-
 ## Curl
 
 Curl to a website using a specific host header - check if the virtualhost is configured:
+
 ```
 curl --verbose --header 'Host: www.domain.tld' 'http://www.some-hosting-server.tld'
 ```
 
 Curl with proxy, check only for header:
+
 ```
 curl -x proxy_ip:8080 -Is https://www.google.com
 HTTP/1.1 200 Connection established
@@ -28,6 +31,7 @@ HTTP/1.1 200 Connection established
 ```
 
 Curl to Zabbix API with JSON post:
+
 ```
 curl -i -X POST -H 'Content-type:application/json' \
    -d '{"jsonrpc":"2.0","method":"user.login", \
@@ -49,7 +53,6 @@ Access-Control-Max-Age: 1000
 
 {"jsonrpc":"2.0","result":"xxxxxxxxxxxxxxxxx","id":0}
 ```
-
 
 Send a UPnP SOAP request:
 
@@ -85,17 +88,18 @@ curl 'http://192.168.40.1:1990/control?WFAWLANConfig' \
 </s:Envelope>'
 ```
 
-
 ## SSL
 
 https://www.sslshopper.com/article-most-common-openssl-commands.html
 
 Create a CSR for a wildcard cert:
+
 ```
 openssl req -new -newkey rsa:2048 -nodes -out wildcard_somedomain_it.csr -keyout wildcard_somedomain_it.key -subj "/C=IT/ST=IT/L=MyCity/O=MyBusiness/CN=*.somedomain.it"
 ```
 
 Create a password protected PFX package (key+certfile+chain), usable for IIS, Sophos UTM etc. :
+
 ```
 openssl pkcs12 -export -out somedomain_it.pfx -inkey wildcard_somedomain_it.key -in wildcard_somedomain_it.crt -certfile intermediate_chain.crt
 ```
@@ -103,6 +107,7 @@ openssl pkcs12 -export -out somedomain_it.pfx -inkey wildcard_somedomain_it.key 
 ## Samba
 
 Create an account file for smbclient (awful plaintext):
+
 ```
 cat .smbaccess
 username=test
@@ -111,6 +116,7 @@ domain=my_domain
 ```
 
 Copy some local files to a specific remote directory:
+
 ```
 /usr/bin/smbclient //my_file_server/backups$ -A .smbaccess -c "lcd /some/local/dir/; cd RemoteDirectory; prompt; mput *"
 
@@ -141,9 +147,10 @@ EOT
 ## SCSI Rescan, lvm and stuff
 
 Rescan drives after resize (ie: Vmware disk extend)
+
 ```
 echo "- - -" > /sys/class/scsi_host/host0/scan
-echo "- - -" > /sys/class/scsi_host/host1/scan	
+echo "- - -" > /sys/class/scsi_host/host1/scan
 echo "- - -" > /sys/class/scsi_host/host2/scan
 ```
 
@@ -154,16 +161,16 @@ echo 1 > /sys/class/scsi_device/0\:0\:0\:0/device/rescan
 ```
 
 Extend the PV to "see" the new available space:
+
 ```
 pvresize /dev/sdb
 ```
 
-
 Extend a LV to 100% of the available space:
+
 ```
 lvresize -l +100%FREE /dev/mysql/lv_mysql
 ```
-
 
 ## SNMP useful stuff
 
@@ -206,17 +213,18 @@ zmprov -l getAllAccounts somedomain.it  | xargs -I {} zmprov da {};
 zmprov dd somedomain
 ```
 
-
 ## Git
 
 Search for deletions:
+
 ```
 git log --diff-filter=D --summary
 ```
 
+## Asterisknow
 
+Wav conversion for announcements:
 
-
-
-
-
+```
+sox some.wav -c1 -r 8000 good.wav
+```
