@@ -228,3 +228,13 @@ Wav conversion for announcements:
 ```
 sox some.wav -c1 -r 8000 good.wav
 ```
+
+AWS Polly SSML for mixed language messages:
+
+```
+<speak>
+Buongiorno! siete in linea con gli uffici di <lang xml:lang="en-US">Something in english</lang>.
+Premete uno per amministrazione, due per ufficio tecnico, nove per riascoltare il messaggio.
+<lang xml:lang="en-US">This is another message in english</lang>
+</speak>
+```
