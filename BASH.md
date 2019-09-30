@@ -104,6 +104,38 @@ Create a password protected PFX package (key+certfile+chain), usable for IIS, So
 openssl pkcs12 -export -out somedomain_it.pfx -inkey wildcard_somedomain_it.key -in wildcard_somedomain_it.crt -certfile intermediate_chain.crt
 ```
 
+Check a Certificate Signing Request (CSR)
+
+```
+openssl req -text -noout -verify -in CSR.csr
+```
+
+Check a private key
+
+```
+openssl rsa -in privateKey.key -check
+```
+
+Check a certificate
+
+```
+openssl x509 -in certificate.crt -text -noout
+```
+
+Check a PKCS#12 file (.pfx or .p12)
+
+```
+openssl pkcs12 -info -in keyStore.p12
+```
+
+Certificate Key Matcher (from SSL Shopper)
+
+```
+openssl pkey -in privateKey.key -pubout -outform pem | sha256sum
+openssl x509 -in certificate.crt -pubkey -noout -outform pem | sha256sum
+openssl req -in CSR.csr -pubkey -noout -outform pem | sha256sum
+```
+
 ## Samba
 
 Create an account file for smbclient (awful plaintext):
