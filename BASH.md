@@ -270,3 +270,38 @@ Premete uno per amministrazione, due per ufficio tecnico, nove per riascoltare i
 <lang xml:lang="en-US">This is another message in english</lang>
 </speak>
 ```
+
+## MySQL
+
+Backup script with some features:
+
+- one directory per DB
+- one file per table
+- non locking (InnoDB)
+- throughput throttling (with `pv`)
+
+```
+#!/bin/sh
+
+MYSQL_USER="root"
+MYSQL_PASS="somePassword"
+MYSQL_HOST="127.0.0.1"
+BACKUP_DIR=/backup/mysql;
+
+test -d "$BACKUP_DIR" || mkdir -p "$BACKUP_DIR"
+
+# Elenco db
+for db in $(mysql -B -s -u $MYSQL_USER --password=$MYSQL_PASS -h $MYSQL_HOST -e 'show databases' | grep -v information_schema)
+do
+        echo "Backing up db '$db'..."
+        for table in `mysql -u $MYSQL_USER -p$MYSQL_PASS $db -h $MYSQL_HOST  -N -B -e "show tables;"`;
+        do
+                echo " - $table"
+                mkdir -p "$BACKUP_DIR/$db"
+                mysqldump -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST --routines --opt --single-transaction --skip-lock-tables  $db $table| pv -q -L 10m | gzip > $BACKUP_DIR/$db/$table.sql.gz;
+        done
+
+        echo "Done '$db'"
+        echo "---------------------------------------------------------------------------------"
+done
+```
