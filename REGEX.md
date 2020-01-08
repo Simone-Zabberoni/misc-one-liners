@@ -1,7 +1,6 @@
 # Regular expressions
 
-
- ## Positional matching
+## Positional matching
 
 Simple positional extraction, a little crude:
 
@@ -16,6 +15,7 @@ Match:	`W.15.12.0011, `
 ```
 
 Better approach, with 3 capturing groups to exclude multiple delimiters (, and space in the example):
+
 ```
 String:	HP J9148A 2910al-48G-PoE Switch, revision W.15.12.0011, ROM W.14.06  (Formerly ProCurve)
 
@@ -34,10 +34,10 @@ An even better approach, with a single capturing group for our target and the ot
 String: HP J9148A 2910al-48G-PoE Switch, revision W.15.12.0011, ROM W.14.06  (Formerly ProCurve)
 
 Regex:              (?:(.+?)(?:[, ]+|$)){3}.*
-Capturing Group 1:  `2910al-48G-PoE`    
+Capturing Group 1:  `2910al-48G-PoE`
 
 Regex:              (?:(.+?)(?:[, ]+|$)){6}.*
-Capturing Group 1:  `W.15.12.0011`         
+Capturing Group 1:  `W.15.12.0011`
 ```
 
 ## IP address filtering
@@ -56,3 +56,9 @@ Regex: 192\.168\.25\.1[0-5]
 410/410       192.168.25.13       D     A  2447  OK (4 ms)
 ```
 
+Extract ip address from file, possible false positives:
+
+```
+
+cat somefile.txt | egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+```
