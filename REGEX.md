@@ -58,7 +58,18 @@ Regex: 192\.168\.25\.1[0-5]
 
 Extract ip address from file, possible false positives:
 
+ls
+
 ```
 
 cat somefile.txt | egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+```
+
+## Misc
+
+Grep PCRE with non capturing head and tail:
+
+```
+echo "<bah>6767</bah>" |  grep -oP  "<bah>\K([0-9]+)(?=<\/bah>)"
+6767
 ```
