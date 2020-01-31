@@ -16,6 +16,13 @@ find /var/www -name '*.php*' -exec grep -l '\@assert(base64_decode(\$_REQUEST\["
 
 ## Curl
 
+Whatsmyip:
+
+```
+# curl https://ipinfo.io/ip
+1.2.3.4
+```
+
 Curl to a website using a specific host header - check if the virtualhost is configured:
 
 ```
