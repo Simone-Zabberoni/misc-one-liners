@@ -31,6 +31,88 @@ reboot
 Warning: It will take a few minutes to upgrade firmware. Please do not switchover, reset, remove, or power off the board when upgrade is being performed. Please keep system stable..................................................................................................................................
 ```
 
+## Device info, labels, serial numbers
+
+```
+<SW>display device
+S5730-48C-SI-AC's Device status:
+Slot Sub  Type                   Online    Power    Register     Status   Role
+-------------------------------------------------------------------------------
+0    -    S5730-48C-SI           Present   PowerOn  Registered   Normal   Master
+     1    ES5D21Q04Q01           Present   PowerOn  Registered   Normal   NA
+     PWR1 POWER                  Present   PowerOff Registered   Abnormal NA
+     PWR2 POWER                  Present   PowerOn  Registered   Normal   NA
+     FAN1 FAN                    Present   PowerOn  Registered   Normal   NA
+```
+
+```
+<SW>display device manufacture-info
+Slot  Sub  Serial-number          Manu-date
+- - - - - - - - - - - - - - - - - - - - - -
+0     -    xxxxxxxxxxxxxxxxxxxx   2019-12-26
+      1    xxxxxxxxxxxxxxxx       2019-12-14
+```
+
+```
+<SW>display elabel
+Warning: It may take a long time to excute this command. Continue? [Y/N]:y
+Info: It is executing, please wait....
+/$[System Integration Version]
+/$SystemIntegrationVersion=3.0
+
+
+[Slot_0]
+/$[Board Integration Version]
+/$BoardIntegrationVersion=3.0
+
+
+[Main_Board]
+
+/$[ArchivesInfo Version]
+/$ArchivesInfoVersion=3.0
+
+
+[Board Properties]
+BoardType=S5730-48C-SI-AC
+BarCode=xxxxxxxxxx
+Item=xxxxxxxxxxxx
+Description=S5730-48C-SI Bundle(24 Ethernet 10/100/1000 ports,8 10 Gig SFP+,with 1 interface slot,with 150W AC power supply)
+Manufactured=2019-12-26
+VendorName=Huawei
+IssueNumber=00
+CLEICode=
+BOM=
+
+[cut]
+
+[Board Properties]
+BoardType=xxxxxxxxxxxx
+BarCode=xxxxxxxxxx
+Item=xxxxxxxxxxxxxxxxxxxx
+Description=S5700 Series,ES0W2PSA0150,150W AC Power Module
+Manufactured=2019-12-11
+VendorName=Huawei
+IssueNumber=00
+CLEICode=
+BOM=
+
+[cut]
+
+```
+
+## Misc interface stuff
+
+```
+interface XGigabitEthernet0/0/8
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface 40GE0/1/1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+```
+
 ## Stack setup
 
 On the first device set the maximum priority (100 by default):
