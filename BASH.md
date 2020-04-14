@@ -312,3 +312,11 @@ do
         echo "---------------------------------------------------------------------------------"
 done
 ```
+
+## Zabbix Mysql stuff
+
+Reset admin password:
+
+```
+update users set passwd=md5('zabbix') where alias='Admin';
+```
