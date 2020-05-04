@@ -278,6 +278,15 @@ Premete uno per amministrazione, due per ufficio tecnico, nove per riascoltare i
 </speak>
 ```
 
+AWS Polly SSML - read as single digit ( `.` are used for a better pause):
+
+```
+<speak>
+Per urgenze potete chiamare i seguenti numeri. <say-as interpret-as="digit">334654365442</say-as>.
+oppure <say-as interpret-as="digit">338543534534534</say-as>
+</speak>
+```
+
 ## MySQL
 
 Backup script with some features:
