@@ -152,6 +152,14 @@ Slot      Role        MAC Address      Priority   Device Type
 1         Standby     xxxx-xxxx-xxxx   50         S5730-48C-SI-AC
 ```
 
+Other commands
+
+```
+display stack peers
+display stack configuration
+display stack channel all
+```
+
 Test: unplug one of the QSFP+ connector, the topology changes to `link`:
 
 ```
