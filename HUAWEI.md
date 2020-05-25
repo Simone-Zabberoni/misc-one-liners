@@ -165,3 +165,51 @@ Test: unplug one of the QSFP+ connector, the topology changes to `link`:
 ```
 Dec 20 2019 16:57:30 HUAWEI %%01FSP/4/TOPO_CHANGE(l)[55]:Topology changed from 1 to 0(0: link, 1: ring).
 ```
+
+## RANCID Stuff
+
+Uses a custom h3clogin expect script: https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/h3clogin
+
+Config file:
+
+```
+# cat /root/.cloginrc
+add password * someStrongerPassword
+add method * ssh
+add cyphertype * aes256-ctr,aes128-ctr
+```
+
+Some cmd files:
+
+```
+# cat add-szabberoni.cmd
+system-view
+aaa
+local-user szabberoni password cipher SomeStrongPassword123!
+local-user szabberoni privilege level 15
+local-user szabberoni service-type telnet terminal ssh ftp http
+quit
+quit
+
+# cat disable-initial-pass-warning.cmd
+system-view
+aaa
+local-aaa-user password policy administrator
+undo password alert original
+quit
+quit
+quit
+```
+
+Run them:
+
+```
+# h3clogin  -u admin -x disable-initial-pass-warning.cmd 1.2.3.4
+# h3clogin  -u admin -x add-szabberoni.cmd 1.2.3.4
+```
+
+Run custom commands:
+
+```
+# h3clogin  -u admin -c 'display current' 1.2.3.4
+```
