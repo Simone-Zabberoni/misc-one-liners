@@ -213,3 +213,84 @@ Run custom commands:
 ```
 # h3clogin  -u admin -c 'display current' 1.2.3.4
 ```
+
+## GBIC Debug
+
+```
+<SOME-SWITCH>display transceiver interface XGigabitEthernet0/0/1
+
+XGigabitEthernet0/0/1 transceiver information:
+-------------------------------------------------------------
+Common information:
+  Transceiver Type               :10GBASE_ER_SFP
+  Connector Type                 :LC
+  Wavelength(nm)                 :1550
+  Transfer Distance(m)           :30000(9um)
+  Digital Diagnostic Monitoring  :YES
+  Vendor Name                    :Judging
+  Vendor Part Number             :Judging
+  Ordering Name                  :
+-------------------------------------------------------------
+Manufacture information:
+  Manu. Serial Number            :xxxxxxxxxxxx
+  Manufacturing Date             :xxxxxxxxxxxx
+  Vendor Name                    :Judging
+-------------------------------------------------------------
+```
+
+```
+<SOME-SWITCH>display transceiver diagnosis interface XGigabitEthernet0/0/1
+Port XGigabitEthernet0/0/1 transceiver diagnostic information:
+Parameter        Current       Low Alarm    High Alarm
+  Type            Value        Threshold    Threshold    Status
+-------------   ---------      ---------    ----------   --------
+TxPower(dBm)    0.61           -8.70        7.00         normal
+RxPower(dBm)    -33.98         -19.79       2.00         abnormal
+Current(mA)     45.94          20.00        120.00       normal
+Temp.(¡ãC)      31.48          -5.00        75.00        normal
+Voltage(V)      3.29           3.03         3.56         normal
+```
+
+```
+<SOME-SWITCH>display transceiver verbose
+
+XGigabitEthernet0/0/1 transceiver information:
+-------------------------------------------------------------
+Common information:
+  Transceiver Type               :10GBASE_ER_SFP
+  Connector Type                 :LC
+  Wavelength(nm)                 :1550
+  Transfer Distance(m)           :30000(9um)
+  Digital Diagnostic Monitoring  :YES
+  Vendor Name                    :OPNEXT,INC
+  Vendor Part Number             :xxxxxxxxxxxxxxxx
+  Ordering Name                  :
+-------------------------------------------------------------
+Manufacture information:
+  Manu. Serial Number            :xxxxxxxxxxxx
+  Manufacturing Date             :xxxxxxxxxxxx
+  Vendor Name                    :OPNEXT,INC
+-------------------------------------------------------------
+Diagnostic information:
+  Temperature(¡ãC)              :33.66
+  Temp High Threshold(¡ãC)      :75.00
+  Temp Low  Threshold(¡ãC)      :-5.00
+  Voltage(V)                    :3.29
+  Volt High Threshold(V)        :3.56
+  Volt Low  Threshold(V)        :3.03
+  Bias Current(mA)              :46.53
+  Bias High Threshold(mA)       :120.00
+  Bias Low  Threshold(mA)       :20.00
+  RX Power(dBM)                 :-33.98
+  RX Power High Warning(dBM)    :-1.00
+  RX Power Low  Warning(dBM)    :-15.80
+  RX Power High Threshold(dBM)  :2.00
+  RX Power Low  Threshold(dBM)  :-19.79
+  TX Power(dBM)                 :0.53
+  TX Power High Warning(dBM)    :4.00
+  TX Power Low  Warning(dBM)    :-4.70
+  TX Power High Threshold(dBM)  :7.00
+  TX Power Low  Threshold(dBM)  :-8.70
+  Transceiver phony alarm       : Yes
+-------------------------------------------------------------
+```
