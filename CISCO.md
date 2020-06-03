@@ -563,3 +563,31 @@ reload
 capture testcap interface outside match ip 1.2.3.4 255.255.255.255 any
 show capture testcap
 ```
+
+## SG300 / 500 line - slighlty different syntax....
+
+### Portchannel/LACP - switchport mode trunk is default
+
+```
+SG300#show running-config interface Port-Channel 1
+interface Port-channel1
+ description test97
+ macro description no_switch
+ switchport trunk allowed vlan add 2-16,18,22
+ no macro auto smartport
+!
+SG300#show running-config interface GigabitEthernet 19
+interface gigabitethernet19
+ description CoreNode1
+ channel-group 1 mode auto
+ macro description no_switch
+ no macro auto smartport
+!
+SG300#show running-config interface GigabitEthernet 20
+interface gigabitethernet20
+ description CoreNode2
+ channel-group 1 mode auto
+ macro description no_switch
+ no macro auto smartport
+!
+```
