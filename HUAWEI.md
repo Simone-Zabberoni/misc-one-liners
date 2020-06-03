@@ -100,7 +100,9 @@ BOM=
 
 ```
 
-## Misc interface stuff
+## Interfaces configuration
+
+### Trunk with vlan 1 native
 
 ```
 interface XGigabitEthernet0/0/8
@@ -111,6 +113,104 @@ interface 40GE0/1/1
  port link-type trunk
  port trunk allow-pass vlan 2 to 4094
 #
+```
+
+### Trunk with another vlan native
+
+```
+interface GigabitEthernet1/0/13
+ port link-type trunk
+ port trunk pvid vlan 4
+ port trunk allow-pass vlan 2 to 4094
+#
+```
+
+### Access port
+
+```
+interface GigabitEthernet1/0/14
+ port link-type access
+ port default vlan 10
+#
+```
+
+### LACP with vlan trunk
+
+```
+interface Eth-Trunk1
+ description some trunk
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ max active-linknumber 2
+#
+
+interface XGigabitEthernet0/0/1
+ eth-trunk 1
+#
+interface XGigabitEthernet0/0/2
+ eth-trunk 1
+```
+
+## Trunk creation script
+
+```
+cat huawei-ethtrunk-create.sh
+#!/bin/bash
+
+
+FROM=1
+TO=11
+
+
+for (( interface=$FROM; interface<=$TO; interface++ ))
+do
+
+        echo "interface Eth-Trunk${interface}"
+        echo "port link-type trunk"
+        echo "port trunk allow-pass vlan 2 to 4094"
+        echo "mode lacp"
+        echo "max active-linknumber 2"
+        echo "q"
+
+        echo "interface GigabitEthernet0/0/${interface}"
+        echo "eth-trunk ${interface}"
+
+        echo "interface GigabitEthernet1/0/${interface}"
+        echo "eth-trunk ${interface}"
+        echo " "
+done
+```
+
+## Clear interface config
+
+```
+interface GigabitEthernet0/0/24
+clear configuration this
+y
+undo shutdown
+```
+
+## Clear interface script
+
+```
+cat huawei-interface-clear.sh
+#!/bin/bash
+
+#ROOT_INTERFACE="GigabitEthernet0/0"
+ROOT_INTERFACE="GigabitEthernet1/0"
+FROM=1
+TO=22
+
+
+for (( interface=$FROM; interface<=$TO; interface++ ))
+do
+        echo "interface $ROOT_INTERFACE/${interface}"
+        echo "clear configuration this"
+        echo "y"
+        echo "undo shutdown"
+done
+
 ```
 
 ## Stack setup
@@ -293,4 +393,57 @@ Diagnostic information:
   TX Power Low  Threshold(dBM)  :-8.70
   Transceiver phony alarm       : Yes
 -------------------------------------------------------------
+```
+
+## Misc show stuff
+
+```
+[CORE]display lldp neighbor brief
+Local Intf       Neighbor Dev             Neighbor Intf             Exptime(s)
+GE0/0/23         OneSwitch                119                       105
+XGE0/0/1         AnotherOne               XGE0/0/8                  117
+```
+
+```
+[CORE]display interface Eth-Trunk 1
+Eth-Trunk1 current state : DOWN
+Line protocol current state : DOWN
+Description:sw-ICT
+Switch Port, Link-type : trunk(configured),
+PVID :    1, Hash arithmetic : According to SIP-XOR-DIP,Maximal BW: 2G, Current BW: 0M, The Maximum Frame Length is 9216
+IP Sending Frames' Format is PKTFMT_ETHNT_2, Hardware address is d0c6-5b8d-17e0
+Current system time: 2020-06-03 08:48:06+01:00
+Last 300 seconds input rate 0 bits/sec, 0 packets/sec
+Last 300 seconds output rate 0 bits/sec, 0 packets/sec
+Input:  0 packets, 0 bytes
+  Unicast:                          0,  Multicast:                           0
+  Broadcast:                        0,  Jumbo:                               0
+  Discard:                          0,  Pause:                               0
+  Frames:                           0
+
+  Total Error:                      0
+  CRC:                              0,  Giants:                              0
+  Runts:                            0,  DropEvents:                          0
+  Alignments:                       0,  Symbols:                             0
+  Ignoreds:                         0
+
+Output:  0 packets, 0 bytes
+  Unicast:                          0,  Multicast:                           0
+  Broadcast:                        0,  Jumbo:                               0
+  Discard:                          0,  Pause:                               0
+
+  Total Error:                      0
+  Collisions:                       0,  Late Collisions:                     0
+  Deferreds:                        0
+
+    Input bandwidth utilization  :    0%
+    Output bandwidth utilization :    0%
+-----------------------------------------------------
+PortName                      Status      Weight
+-----------------------------------------------------
+GigabitEthernet0/0/24         DOWN        1
+GigabitEthernet1/0/24         DOWN        1
+-----------------------------------------------------
+The Number of Ports in Trunk : 2
+The Number of UP Ports in Trunk : 0
 ```
