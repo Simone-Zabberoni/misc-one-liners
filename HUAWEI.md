@@ -290,7 +290,9 @@ local-user szabberoni privilege level 15
 local-user szabberoni service-type telnet terminal ssh ftp http
 quit
 quit
+```
 
+```
 # cat disable-initial-pass-warning.cmd
 system-view
 aaa
@@ -299,6 +301,28 @@ undo password alert original
 quit
 quit
 quit
+```
+
+```
+# cat ntp-fixup.cmd
+system-view
+undo ntp-service unicast-server 2.3.4.5
+ntp-service unicast-server 1.2.3.4
+ntp-service refclock-master 15
+clock timezone Bern,Rome,Stockholm,Vienna add 01:00:00
+clock daylight-saving-time Bern,Rome,Stockholm,Vienna repeating 00:00 last Sun Mar 00:00 last Sun Oct 01:00 2000 2099
+quit
+save
+y
+quit
+```
+
+```
+# cat ntp-show.cmd
+displa clock
+display ntp-service session
+quit
+
 ```
 
 Run them:
