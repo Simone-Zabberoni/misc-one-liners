@@ -324,8 +324,76 @@ done
 
 ## Zabbix Mysql stuff
 
-Reset admin password:
+### Reset admin password:
 
 ```
 update users set passwd=md5('zabbix') where alias='Admin';
+```
+
+### Zabbix 5.0 update DB conversions (thanks to @riogezz - https://github.com/riogezz)
+
+Addition to /etc/my.cnf
+
+```
+    [client]
+    user=zabbix
+    password=YourZabbixUserPassword
+```
+
+**Important**: `ALTER TABLE` makes a FULL copy of the table, make sure to have enough time and storage
+
+```
+systemctl stop zabbix-server
+
+mysql --database=zabbix -B -N -e "SHOW TABLES" | awk '{print "SET foreign_key_checks = 0; ALTER TABLE", $1, "CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin; SET foreign_key_checks = 1; "}' | mysql --database=zabbix
+
+    mysql -e "ALTER DATABASE zabbix CHARACTER SET utf8 COLLATE utf8_bin;"
+```
+
+### Double precision value:
+
+```
+    wget https://git.zabbix.com/projects/ZBX/repos/zabbix/raw/database/mysql/double.sql
+    mysql zabbix < double.sql
+```
+
+Addition to `/etc/zabbix/web/zabbix.conf.php`:
+
+```
+
+    $DB['DOUBLE_IEEE754'] = 'true';
+```
+
+**Important**: Restart apache2/nginx and php-fpm
+
+### Zabbix 5.0 collation conversion status:
+
+Current processes:
+
+```
+MariaDB [zabbixdb]> SHOW PROCESSLIST
+    -> ;
++-----+------------+-----------+----------+---------+------+-------------------+------------------------------------------------------------------------+----------+
+| Id  | User       | Host      | db       | Command | Time | State             | Info                                                                   | Progress |
++-----+------------+-----------+----------+---------+------+-------------------+------------------------------------------------------------------------+----------+
+|  52 | zabbixuser | localhost | zabbixdb | Query   |    2 | copy to tmp table | ALTER TABLE history_str CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin |    1.399 |
+| 347 | zabbixuser | localhost | zabbixdb | Query   |    0 | NULL              | SHOW PROCESSLIST                                                       |    0.000 |
++-----+------------+-----------+----------+---------+------+-------------------+------------------------------------------------------------------------+----------+
+2 rows in set (0.00 sec)
+```
+
+Show tables to convert:
+
+```
+MariaDB [zabbixdb]> show table status where collation not like 'utf8_bin';
++---------------------+--------+---------+------------+-----------+----------------+-------------+-----------------+--------------+------------+----------------+-----  ----------------+-------------+------------+-----------------+----------+----------------+---------+
+| Name                | Engine | Version | Row_format | Rows      | Avg_row_length | Data_length | Max_data_length | Index_length | Data_free  | Auto_increment | Crea  te_time         | Update_time | Check_time | Collation       | Checksum | Create_options | Comment |
++---------------------+--------+---------+------------+-----------+----------------+-------------+-----------------+--------------+------------+----------------+-----  ----------------+-------------+------------+-----------------+----------+----------------+---------+
+| history_uint        | InnoDB |      10 | Compact    | 252884126 |             52 | 13354647552 |               0 |  10553049088 |   93323264 |           NULL | 2020  -06-17 02:04:34 | NULL        | NULL       | utf8_general_ci |     NULL | partitioned    |         |
+| task_check_now      | InnoDB |      10 | Compact    |         0 |              0 |       16384 |               0 |            0 |          0 |           NULL | 2018  -11-20 10:03:19 | NULL        | NULL       | utf8_general_ci |     NULL |                |         |
+| task_remote_command | InnoDB |      10 | Compact    |         0 |              0 |       16384 |               0 |            0 |          0 |           NULL | 2017  -10-03 10:18:32 | NULL        | NULL       | utf8_general_ci |     NULL |                |         |
+| trends              | InnoDB |      10 | Compact    |  45450154 |            105 |  4812013568 |               0 |            0 | 1525678080 |           NULL | 2020  -06-17 02:12:27 | NULL        | NULL       | utf8_general_ci |     NULL | partitioned    |         |
+| trends_uint         | InnoDB |      10 | Compact    |  91883023 |            102 |  9422929920 |               0 |            0 | 1902116864 |           NULL | 2020  -06-17 02:18:44 | NULL        | NULL       | utf8_general_ci |     NULL | partitioned    |         |
++---------------------+--------+---------+------------+-----------+----------------+-------------+-----------------+--------------+------------+----------------+-----  ----------------+-------------+------------+-----------------+----------+----------------+---------+
+5 rows in set (1 min 31.85 sec)
 ```
