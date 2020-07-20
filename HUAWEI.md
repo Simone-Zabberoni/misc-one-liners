@@ -484,6 +484,59 @@ GigabitEthernet0/0/1     on      enable   -        Low      Powered
 GigabitEthernet0/0/2     off     enable   -        Low      Detecting
 ```
 
+## Cable Testing - watch out!
+
+Long cable, unplugged:
+
+```
+[HUAWEI-GigabitEthernet0/0/48]virtual-cable-test
+Warning: The command will stop service for a while. Continue? [Y/N]:y
+Info: This operation may take a few seconds. Please wait for a moment....................done.
+Pair A length: 30meter(s)
+Pair B length: 31meter(s)
+Pair C length: 32meter(s)
+Pair D length: 31meter(s)
+Pair A state: Open
+Pair B state: Open
+Pair C state: Open
+Pair D state: Open
+Info: The test result is only for reference.
+```
+
+10 mt cable, unplugged:
+
+```
+[HUAWEI-GigabitEthernet0/0/48]virtual-cable-test
+Warning: The command will stop service for a while. Continue? [Y/N]:y
+Info: This operation may take a few seconds. Please wait for a moment..................done.
+Pair A length: 9meter(s)
+Pair B length: 11meter(s)
+Pair C length: 10meter(s)
+Pair D length: 10meter(s)
+Pair A state: Open
+Pair B state: Open
+Pair C state: Open
+Pair D state: Open
+Info: The test result is only for reference.
+```
+
+2 mt cable, unplugged:
+
+```
+[HUAWEI-GigabitEthernet0/0/48]virtual-cable-test
+Warning: The command will stop service for a while. Continue? [Y/N]:y
+Info: This operation may take a few seconds. Please wait for a moment..................done.
+Pair A length: 1meter(s)
+Pair B length: 2meter(s)
+Pair C length: 1meter(s)
+Pair D length: 2meter(s)
+Pair A state: Open
+Pair B state: Open
+Pair C state: Open
+Pair D state: Open
+Info: The test result is only for reference.
+```
+
 ## Misc show stuff
 
 ```
