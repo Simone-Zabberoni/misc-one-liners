@@ -484,6 +484,33 @@ GigabitEthernet0/0/1     on      enable   -        Low      Powered
 GigabitEthernet0/0/2     off     enable   -        Low      Detecting
 ```
 
+## Mac address flap (roaming devices, loops and issues)
+
+```
+<sw-1>display mac-address flapping record
+ S  : start time
+ E  : end time
+(Q) : quit VLAN
+(D) : error down
+-------------------------------------------------------------------------------
+Move-Time                 VLAN MAC-Address  Original-Port  Move-Ports   MoveNum
+-------------------------------------------------------------------------------
+S:2020-07-27 14:53:07 DST 1    1234-230d-1234 GE1/0/1       Eth-Trunk1    10
+E:2020-07-27 15:00:24 DST                                   GE0/0/1
+
+-------------------------------------------------------------------------------
+Total items on slot 1: 1
+
+-------------------------------------------------------------------------------
+Move-Time                 VLAN MAC-Address  Original-Port  Move-Ports   MoveNum
+-------------------------------------------------------------------------------
+S:2020-07-27 14:25:39 DST 1    1234-230d-1231 GE1/0/1       GE1/0/4       42
+E:2020-07-27 15:00:53 DST                                   GE1/0/5
+
+-------------------------------------------------------------------------------
+Total items on slot 0: 1
+```
+
 ## Cable Testing - watch out!
 
 Long cable, unplugged:
