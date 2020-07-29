@@ -269,18 +269,31 @@ Dec 20 2019 16:57:30 HUAWEI %%01FSP/4/TOPO_CHANGE(l)[55]:Topology changed from 1
 Stack with service ports - configure with _unplugged_ cables:
 
 ```
+system-view
 interface stack-port 0/1
 port interface XGigabitEthernet 0/0/1 enable
+y
 
 interface stack-port 0/2
 port interface XGigabitEthernet 0/0/2 enable
+y
+
 ```
 
 On the secondary:
 
 ```
+system-view
+interface stack-port 0/1
+port interface XGigabitEthernet 0/0/1 enable
+y
+
+interface stack-port 0/2
+port interface XGigabitEthernet 0/0/2 enable
+y
 
 stack slot 0 renumber 1
+y
 
 ```
 
