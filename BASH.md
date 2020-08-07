@@ -322,6 +322,20 @@ do
 done
 ```
 
+### Misc mysql utils
+
+Scheduled tasks:
+
+```
+show events;
+```
+
+Current processes:
+
+```
+show processlist;
+```
+
 ## Zabbix Mysql stuff
 
 ### Reset admin password:
