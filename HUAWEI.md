@@ -404,6 +404,23 @@ Run custom commands:
 
 ```
 
+## Logging
+
+Setup a remote syslog with a specific log level:
+
+```
+info-center channel 6 name SomeChannelName
+info-center source default channel SomeChannelName log level notification
+info-center loghost source Vlanif 123
+info-center loghost 1.2.3.4 channel SomeChannelName
+```
+
+Filter out noisy logs:
+
+```
+info-center filter-id bymodule-alias FSP AUTOCONFIGFAILED
+```
+
 ## GBIC Debug
 
 ```
