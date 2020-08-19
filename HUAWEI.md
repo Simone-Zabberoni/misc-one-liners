@@ -421,6 +421,47 @@ Filter out noisy logs:
 info-center filter-id bymodule-alias FSP AUTOCONFIGFAILED
 ```
 
+## Interface mirroring
+
+Create the observe (aka mirror) port, yout analyzer will be connected here:
+
+```
+system-view
+observe-port 1 interface GigabitEthernet 1/0/14
+```
+
+Select the target port, bind it to the monitor port and select the traffic direction to monitor:
+
+```
+system-view
+interface GigabitEthernet 1/0/1
+port-mirroring to observe-port 1 both
+```
+
+Display monitoring status:
+
+```
+display port-mirroring
+  ----------------------------------------------------------------------
+  Observe-port 1 : GigabitEthernet1/0/14
+  ----------------------------------------------------------------------
+  Port-mirror:
+  ----------------------------------------------------------------------
+       Mirror-port               Direction  Observe-port
+  ----------------------------------------------------------------------
+  1    GigabitEthernet1/0/1      Inbound    Observe-port 1
+  2    GigabitEthernet1/0/1      Outbound   Observe-port 1
+  ----------------------------------------------------------------------
+
+display observe-port
+  ----------------------------------------------------------------------
+  Index          : 1
+  Untag-packet   : No
+  Forwarding     : Yes
+  Interface      : GigabitEthernet1/0/14
+  ----------------------------------------------------------------------
+```
+
 ## GBIC Debug
 
 ```
