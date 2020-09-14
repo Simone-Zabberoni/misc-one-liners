@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "55e36224-4786-49c4-adb5-d4f15a73ee62",
+		"name": "Elasticsearch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:9200/_cat/indices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/_cat/indices",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_cat",
+						"indices"
+					]
+				},
+				"description": "Get all indices"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/_template/all",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"template\": \"*\",\r\n  \"settings\": {\r\n    \"number_of_shards\": 1,\r\n    \"number_of_replicas\": 0\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "localhost:9200/_template/all",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_template",
+						"all"
+					]
+				},
+				"description": "Configure ALL templates"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/_cluster/health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/_cluster/health",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_cluster",
+						"health"
+					]
+				},
+				"description": "Cluster Health"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/_template/all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/_template/all",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_template",
+						"all"
+					]
+				},
+				"description": "Get ALL template settings"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						""
+					]
+				},
+				"description": "Get generic info"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/_cat/pending_tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/_cat/pending_tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_cat",
+						"pending_tasks"
+					]
+				},
+				"description": "Pending Tasks\r\n"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/access-logs-*/_settings",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"index\" : {\r\n    \"number_of_replicas\" : 0\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "localhost:9200/access-logs-*/_settings",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"access-logs-*",
+						"_settings"
+					]
+				},
+				"description": "Single replica all"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/_nodes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/_nodes",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_nodes"
+					]
+				},
+				"description": "Nodes"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

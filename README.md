@@ -2,6 +2,8 @@
 
 This is my personal collection of cut/paste commands, snippets and scripts for various languages and platforms.
 
+- [Elasticsearch](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/ELASTICSEARCH.md) - various api commands
+- [Postman Elasticsearch](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/Elasticsearch.postman_collection.json) - Postman collection for Elasticsearch
 - [Docker](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/DOCKER.md) - sample usage, formatting and inspection
 - [Bash scripting](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/BASH.md) - curls, sed/awk
 - [Powershell](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/WIN-POWERSHELL.md) - general usage, json webrequests, system administration
