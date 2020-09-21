@@ -26,6 +26,26 @@
 			"response": []
 		},
 		{
+			"name": "localhost:9200/_cat/shards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/_cat/shards",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"_cat",
+						"shards"
+					]
+				},
+				"description": "Get all indices"
+			},
+			"response": []
+		},
+		{
 			"name": "localhost:9200/_template/all",
 			"request": {
 				"method": "PUT",
