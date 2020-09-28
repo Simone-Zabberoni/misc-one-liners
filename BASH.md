@@ -1,5 +1,33 @@
 # Bash one liners
 
+## Yum
+
+Search all version of a package:
+
+```
+yum --showduplicates list kibana
+[cut]
+
+Available Packages
+kibana.x86_64                                                                           7.0.0-1                                                                           elastic-7
+kibana.x86_64                                                                           7.0.1-1                                                                           elastic-7
+kibana.x86_64                                                                           7.1.0-1                                                                           elastic-7
+
+[cut]
+
+kibana.x86_64                                                                           7.9.0-1                                                                           elastic-7
+kibana.x86_64                                                                           7.9.1-1                                                                           elastic-7
+kibana.x86_64                                                                           7.9.2-1
+```
+
+And install a specific one:
+
+```
+yum install kibana-7.8.0-1
+
+
+```
+
 ## Find, sed and similar
 
 Search for pattern in all php files, remove any file that matches:
