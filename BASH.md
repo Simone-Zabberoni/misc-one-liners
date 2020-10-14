@@ -139,6 +139,13 @@ Create a password protected PFX package (key+certfile+chain), usable for IIS, So
 openssl pkcs12 -export -out somedomain_it.pfx -inkey wildcard_somedomain_it.key -in wildcard_somedomain_it.crt -certfile intermediate_chain.crt
 ```
 
+Extract key and cert from PFX:
+
+```
+openssl pkcs12 -in somedomain_it.pfx -nocerts -nodes -out somedomain_it.key
+openssl pkcs12 -in somedomain_it.pfx -nokeys -out somedomain_it.crt
+```
+
 Check a Certificate Signing Request (CSR)
 
 ```
