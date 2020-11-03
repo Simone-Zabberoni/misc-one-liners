@@ -322,6 +322,24 @@ oppure <say-as interpret-as="digit">338543534534534</say-as>
 </speak>
 ```
 
+Useful sql queries - pickupgroup report:
+
+```
+mysql> select sip.id as 'Interno', users.name as 'Utente', sip.data as 'Pickup Group' from sip,users where sip.keyword='pickupgroup' and sip.id = users.extension order by sip.data;
++---------+-------------------------+--------------+
+| Interno | Utente                  | Pickup Group |
++---------+-------------------------+--------------+
+| 405     | xxxxxxxxxxxx            | 1            |
+| 416     | xxxxxxxxxxxxxxx         | 1            |
+| 475     | xxxxxxxxxxxxxxx         | 1            |
+| 431     | xxxxxxxx                | 12           |
+| 434     | xxxxxxxxxxxxxxxxx       | 12           |
+| 441     | xxxxxxxxxxxxxxxx        | 13           |
+| 433     | xxxxxxxxxxxxx           | 13           |
+| 438     | xxxxxxx                 | 13           |
+| 446     | xxxxxxxxxxxxxxx         | 13           |
+```
+
 ## MySQL
 
 Backup script with some features:
