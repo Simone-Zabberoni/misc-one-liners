@@ -106,7 +106,7 @@ set default_cyphertype "3des"
 
 # H3C: most H3C-derived models use "super" to elevate privileges
 # However MA5600 uses "enable"
-set enacmd "super"
+set enacmd "super 15"
 set enacmd_alt "enable"
 
 # H3C: command to exit from device
