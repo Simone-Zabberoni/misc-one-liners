@@ -323,7 +323,7 @@ Some cmd files:
 
 system-view
 aaa
-local-user szabberoni password cipher SomeStrongPassword123!
+local-user szabberoni password irreversible-cipher SomeStrongPassword123!
 local-user szabberoni privilege level 15
 local-user szabberoni service-type telnet terminal ssh ftp http
 quit
