@@ -559,6 +559,27 @@ Transceiver phony alarm : Yes
 
 ```
 
+Non-supported transceiver:
+
+With unsupported gbics (or too recent ones!) you'll get:
+
+```
+
+Nov 10 2020 21:56:43+08:00 HUAWEI SRM/3/SFP_EXCEPTION:OID 1.3.6.1.4.1.2011.5.25.129.2.1.9 Optical module exception, SFP is not certified. (EntityPhysicalIndex=67469390, BaseTrapSeverity=5, BaseTrapProbableCause=136192, BaseTrapEventType=9, EntPhysicalContainedIn=67108873, EntPhysicalName=XGigabitEthernet0/0/1, RelativeResource=Interface XGigabitEthernet0/0/1 optical module exception, ReasonDescription=It has been observed that a transceiver has been installed that is not certified by Huawei Ethernet Switch. Huawei cannot ensure that it is completely adaptive and will not cause any adverse effects. If it is continued to be used, Huawei is not obligated to provide support to remedy defects or faults arising out of or resulting from installing and using of the non-certified transceiver.)
+```
+
+Alarm suppression (check with support for eligibility):
+
+```
+<HUAWEI> system-view
+
+[HUAWEI] transceiver phony-alarm-disable
+
+Info:Transceiver-phony-alarm disable.
+
+
+```
+
 ## POE
 
 ```
