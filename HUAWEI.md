@@ -741,6 +741,8 @@ The Number of UP Ports in Trunk : 0
 
 ```
 
+---
+
 ## BGP Lab
 
 Two 6730 connected via XGigabitEthernet0/0/24.
@@ -972,4 +974,116 @@ And after a while:
 ```
 Nov 12 2020 13:59:31 sw2 %%01BGP/3/STATE_CHG_UPDOWN(l)[5]:The status of the peer 10.0.20.1 changed from OPENCONFIRM to ESTABLISHED. (InstanceName=Public, StateChangeReason=Up)
 Nov 12 2020 13:59:31 sw2 %%01RM/4/IPV4_DEFT_RT_CHG(l)[6]:IPV4 default Route is changed. (ChangeType=Add, InstanceId=0, Protocol=BGP, ExitIf=Vlanif20, Nexthop=10.0.20.1, Neighbour=10.0.2
+```
+
+---
+
+## VRRP Lab
+
+Sw1 base configuration:
+
+```
+sysname sw1
+#
+vlan batch 10 20 30
+
+interface Vlanif10
+ ip address 10.0.10.1 255.255.255.0
+ vrrp vrid 10 virtual-ip 10.0.10.254
+ vrrp vrid 10 priority 120
+ vrrp vrid 10 preempt-mode timer delay 20
+
+interface Vlanif20
+ ip address 10.0.20.1 255.255.255.0
+ vrrp vrid 20 virtual-ip 10.0.20.254
+ vrrp vrid 20 priority 120
+ vrrp vrid 20 preempt-mode timer delay 20
+
+interface Vlanif30
+ ip address 10.0.30.1 255.255.255.0
+
+interface XGigabitEthernet0/0/1
+ port link-type access
+ port default vlan 10
+
+interface XGigabitEthernet0/0/24
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+```
+
+Sw2 base configuration:
+
+```
+sysname sw2
+#
+vlan batch 10 20 30
+
+interface Vlanif10
+ ip address 10.0.10.2 255.255.255.0
+ vrrp vrid 10 virtual-ip 10.0.10.254
+
+interface Vlanif20
+ ip address 10.0.20.2 255.255.255.0
+ vrrp vrid 20 virtual-ip 10.0.20.254
+
+interface Vlanif30
+ ip address 10.0.30.2 255.255.255.0
+
+interface XGigabitEthernet0/0/1
+ port link-type access
+ port default vlan 10
+
+interface XGigabitEthernet0/0/24
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+```
+
+Check the status on both ends:
+
+```
+[sw1]display vrrp br
+Total:2     Master:2     Backup:0     Non-active:0
+VRID  State        Interface                Type     Virtual IP
+----------------------------------------------------------------
+10    Master       Vlanif10                 Normal   10.0.10.254
+20    Master       Vlanif20                 Normal   10.0.20.254
+```
+
+```
+
+[sw2]display vrrp brief
+Total:2     Master:0     Backup:2     Non-active:0
+VRID  State        Interface                Type     Virtual IP
+----------------------------------------------------------------
+10    Backup       Vlanif10                 Normal   10.0.10.254
+20    Backup       Vlanif20                 Normal   10.0.20.254
+```
+
+A pc connected to Sw2 see these mac addresses:
+
+```
+Interfaccia: 10.0.10.100 --- 0x6
+  Indirizzo Internet    Indirizzo fisico      Tipo
+  10.0.10.1             f4-a4-d6-0d-8d-4b     dinamico
+  10.0.10.2             f4-a4-d6-25-40-eb     dinamico
+  10.0.10.254           00-00-5e-00-01-0a     dinamico
+```
+
+Vlanif ip addresses are bound to real Huawei mac addresses, while the VRRP ip address is bound to a virtual mac address.
+
+Testing: unplug Sw1 while PC is connected to Sw2 with a ping to 10.0.10.254:
+
+```
+Nov 12 2020 14:30:44 sw2 %%01VRRP/4/STATEWARNINGEXTEND(l)[7]:Virtual Router state BACKUP changed to MASTER, because of protocol timer expired. (Interface=Vlanif10, VrId=10, InetType=IPv4)
+```
+
+Just a single packet loss during the migration:
+
+```
+Risposta da 10.0.10.254: byte=32 durata=1ms TTL=254
+Risposta da 10.0.10.254: byte=32 durata<1ms TTL=254
+Richiesta scaduta.
+Risposta da 10.0.10.254: byte=32 durata<1ms TTL=254
+Risposta da 10.0.10.254: byte=32 durata<1ms TTL=254
+Risposta da 10.0.10.254: byte=32 durata<1ms TTL=254
 ```
