@@ -31,6 +31,16 @@ reboot
 Warning: It will take a few minutes to upgrade firmware. Please do not switchover, reset, remove, or power off the board when upgrade is being performed. Please keep system stable..................................................................................................................................
 ```
 
+## Factory reset & reboot
+
+```
+<HUAWEI>reset factory-configuration
+Warning: The command will delete all the configurations and files (except the startup, patch, module, and license files) from the device. Continue? [Y/N]:y
+Warning: The system will reboot after configurations and files are deleted. Continue? [Y/N]:y
+Info: Start restoring factory configurations. Please wait...
+Info: This operation will take several seconds. Please wait.......
+```
+
 ## Device info, labels, serial numbers
 
 ```
