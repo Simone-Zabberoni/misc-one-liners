@@ -741,6 +741,235 @@ The Number of UP Ports in Trunk : 0
 
 ```
 
+## BGP Lab
+
+Two 6730 connected via XGigabitEthernet0/0/24.
+
+Sw1 base configuration:
+
+```
+sysname sw1
+#
+vlan batch 10 20
+
+interface Vlanif10
+ ip address 10.0.10.1 255.255.255.0
+#
+interface Vlanif20
+ ip address 10.0.20.1 255.255.255.0
+#
+interface MEth0/0/1
+ ip address 192.168.1.253 255.255.255.0
+#
+interface XGigabitEthernet0/0/1
+ port link-type access
+ port default vlan 10
+
+interface XGigabitEthernet0/0/24
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+
+ip route-static 0.0.0.0 0.0.0.0 Vlanif 10 10.0.10.254
+
+bgp 65009
+ router-id 10.0.20.1
+ peer 10.0.20.2 as-number 65009
+ #
+ ipv4-family unicast
+  undo synchronization
+  network 10.0.10.0 255.255.255.0		<- not necessary if default-root advertise
+  peer 10.0.20.2 enable
+  peer 10.0.20.2 default-route-advertise
 ```
 
+Sw2 base configuration:
+
+```
+sysname sw2
+#
+vlan batch 20 30 40
+interface Vlanif20
+ ip address 10.0.20.2 255.255.255.0
+#
+interface Vlanif30
+ ip address 10.0.30.2 255.255.255.0
+#
+interface Vlanif40
+ ip address 10.0.40.2 255.255.255.0
+interface XGigabitEthernet0/0/1
+ port link-type access
+ port default vlan 30
+#
+interface XGigabitEthernet0/0/2
+ port link-type access
+ port default vlan 40
+#
+interface XGigabitEthernet0/0/24
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+
+bgp 65009
+ router-id 10.0.20.2
+ peer 10.0.20.1 as-number 65009
+ #
+ ipv4-family unicast
+  undo synchronization
+  network 10.0.30.0 255.255.255.0
+  network 10.0.40.0 255.255.255.0
+  network 192.168.69.0
+  peer 10.0.20.1 enable
+```
+
+Check route propagation on both ends:
+
+```
+[sw1]display bgp routing-table
+
+ BGP Local router ID is 10.0.20.1
+ Status codes: * - valid, > - best, d - damped,
+               h - history,  i - internal, s - suppressed, S - Stale
+               Origin : i - IGP, e - EGP, ? - incomplete
+
+
+ Total Number of Routes: 3
+      Network            NextHop        MED        LocPrf    PrefVal Path/Ogn
+
+ *>   10.0.10.0/24       0.0.0.0         0                     0      i
+ *>i  10.0.30.0/24       10.0.20.2       0          100        0      i
+ *>i  10.0.40.0/24       10.0.20.2       0          100        0      i
+```
+
+```
+[sw2]display bgp routing-table
+
+ BGP Local router ID is 10.0.20.2
+ Status codes: * - valid, > - best, d - damped,
+               h - history,  i - internal, s - suppressed, S - Stale
+               Origin : i - IGP, e - EGP, ? - incomplete
+
+
+ Total Number of Routes: 4
+      Network            NextHop        MED        LocPrf    PrefVal Path/Ogn
+
+ *>i  0.0.0.0            10.0.20.1       0          100        0      i
+ *>i  10.0.10.0/24       10.0.20.1       0          100        0      i
+ *>   10.0.30.0/24       0.0.0.0         0                     0      i
+ *>   10.0.40.0/24       0.0.0.0         0                     0      i
+```
+
+Remove the advertising of 10.0.10.0 from Sw1, leave only the default:
+
+```
+[sw1]bgp 65009
+[sw1-bgp]ipv4-family unicast
+[sw1-bgp-af-ipv4]undo
+[sw1-bgp-af-ipv4]undo network 10.0.10.0 255.255.255.0
+
+[sw1]display bgp routing-table
+
+ BGP Local router ID is 10.0.20.1
+ Status codes: * - valid, > - best, d - damped,
+               h - history,  i - internal, s - suppressed, S - Stale
+               Origin : i - IGP, e - EGP, ? - incomplete
+
+
+ Total Number of Routes: 2
+      Network            NextHop        MED        LocPrf    PrefVal Path/Ogn
+
+ *>i  10.0.30.0/24       10.0.20.2       0          100        0      i
+ *>i  10.0.40.0/24       10.0.20.2       0          100        0      i
+```
+
+Check it on Sw2:
+
+```
+<sw2>display bgp routing-table
+
+ BGP Local router ID is 10.0.20.2
+ Status codes: * - valid, > - best, d - damped,
+               h - history,  i - internal, s - suppressed, S - Stale
+               Origin : i - IGP, e - EGP, ? - incomplete
+
+
+ Total Number of Routes: 3
+      Network            NextHop        MED        LocPrf    PrefVal Path/Ogn
+
+ *>i  0.0.0.0            10.0.20.1       0          100        0      i
+ *>   10.0.30.0/24       0.0.0.0         0                     0      i
+ *>   10.0.40.0/24       0.0.0.0         0                     0      i
+```
+
+Add a static route on sw2 (10.0.50.0/24 through 10.0.40.254), import it in bgp and advertise it to Sw1:
+
+```
+[sw2] ip route-static 10.0.50.0 255.255.255.0 Vlanif 40 10.0.40.254
+[sw2] bgp 65009
+[sw2-bgp]import-route static
+[sw2-bgp]display bgp routing-table
+
+ BGP Local router ID is 10.0.20.2
+ Status codes: * - valid, > - best, d - damped,
+               h - history,  i - internal, s - suppressed, S - Stale
+               Origin : i - IGP, e - EGP, ? - incomplete
+
+
+ Total Number of Routes: 4
+      Network            NextHop        MED        LocPrf    PrefVal Path/Ogn
+
+ *>i  0.0.0.0            10.0.20.1       0          100        0      i
+ *>   10.0.30.0/24       0.0.0.0         0                     0      i
+ *>   10.0.40.0/24       0.0.0.0         0                     0      i
+ *>   10.0.50.0/24       0.0.0.0         0                     0      ?
+```
+
+Check on sw1:
+
+```
+[sw1]display bgp routing-table
+
+ BGP Local router ID is 10.0.20.1
+ Status codes: * - valid, > - best, d - damped,
+               h - history,  i - internal, s - suppressed, S - Stale
+               Origin : i - IGP, e - EGP, ? - incomplete
+
+
+ Total Number of Routes: 3
+      Network            NextHop        MED        LocPrf    PrefVal Path/Ogn
+
+ *>i  10.0.30.0/24       10.0.20.2       0          100        0      i
+ *>i  10.0.40.0/24       10.0.20.2       0          100        0      i
+ *>i  10.0.50.0/24       10.0.20.2       0          100        0      ?
+```
+
+Add password authentication:
+
+```
+[sw1]bgp 65009
+[sw1-bgp]peer 10.0.20.2 password cipher biggipi
+```
+
+After a while the bgp sessions goes down:
+
+```
+Nov 12 2020 13:57:45 sw1 %%01BGP/3/STATE_CHG_UPDOWN(l)[25]:The status of the peer 10.0.20.2 changed from ESTABLISHED to IDLE. (InstanceName=Public, StateChangeReason=Hold Timer Expired)
+```
+
+In the logs you'll find some auth fail:
+
+```
+Nov 12 2020 13:55:45 sw2 %%01SOCKET/4/TCP_AUTH_FAILED(s)[6]:TCP authentication failed. (AuthenticationType=MD5, Cause=no local digest, SourceAddress=10.0.20.2, SourcePort=50576, ForeignAddress=10.0.20.1, ForeignPort=179, Protocol=BGP, VpnInstanceName=)
+```
+
+Add password authentication on the other end as well:
+
+```
+[sw2]bgp 65009
+[sw2-bgp]peer 10.0.20.1 password cipher biggipi
+```
+
+And after a while:
+
+```
+Nov 12 2020 13:59:31 sw2 %%01BGP/3/STATE_CHG_UPDOWN(l)[5]:The status of the peer 10.0.20.1 changed from OPENCONFIRM to ESTABLISHED. (InstanceName=Public, StateChangeReason=Up)
+Nov 12 2020 13:59:31 sw2 %%01RM/4/IPV4_DEFT_RT_CHG(l)[6]:IPV4 default Route is changed. (ChangeType=Add, InstanceId=0, Protocol=BGP, ExitIf=Vlanif20, Nexthop=10.0.20.1, Neighbour=10.0.2
 ```
