@@ -555,6 +555,142 @@ boot system flash:cat9k_lite_iosxe.16.10.01.SPA.bin
 reload
 ```
 
+## Cisco 887 VAG with SIM card
+
+
+Check network:
+```
+Router#show cellular 0 network
+Current Service Status = Normal, Service Error = None
+Current Service = Combined
+Packet Service = HSPA (Attached)
+Packet Session Status = Inactive
+Current Roaming Status = Home
+Network Selection Mode = Manual
+Country = ITA, Network = TIM
+Mobile Country Code (MCC) = 222
+Mobile Network Code (MNC) = 1
+Location Area Code (LAC) = 61448
+Routing Area Code (RAC) = 0
+Cell ID = xxxxx
+Primary Scrambling Code = xxx
+PLMN Selection = Manual
+Registered PLMN = I TIM , Abbreviated = TIM
+Service Provider =
+```
+
+Check for unlocked sim:
+```
+show cellular 0 security
+Active SIM = 0
+SIM switchover attempts = 0
+Card Holder Verification (CHV1) = Disabled
+SIM Status = OK
+SIM User Operation Required = None
+Number of CHV1 Retries remaining = 3
+```
+
+Check profile:
+```
+Router#show cellular 0 profile 1
+Profile 1 = INACTIVE*
+--------
+PDP Type = IPv4
+Access Point Name (APN) = a_wrong_apn
+Authentication = PAP
+Username: a_wrong_username, Password: some_pass
+
+ * - Default profile
+```
+
+Set the correct apn to the profile (example for TIM):
+```
+cellular 0 gsm profile create 1 ibox.tim.it
+Profile 1 already exists. Do you want to overwrite? [confirm]
+Profile 1 will be overwritten with the following values:
+PDP type = IPv4
+APN = ibox.tim.it
+Are you sure? [confirm]
+Profile 1 written to modem
+```
+
+
+Minimal configuration:
+
+```
+chat-script hspa-R7 "" "AT!SCACT=1,1" TIMEOUT 60 "OK"
+
+interface Cellular0
+ ip address negotiated
+ no ip redirects
+ no ip unreachables
+ no ip proxy-arp
+ no ip mfib forwarding input
+ no ip mfib forwarding output
+ no ip mfib cef input
+ no ip mfib cef output
+ ip nat outside
+ ip virtual-reassembly in
+ encapsulation slip
+ no ip route-cache
+ dialer in-band
+ dialer string hspa-R7
+ dialer-group 1
+ async mode interactive
+!
+
+interface Vlan1
+ ip address 192.168.1.1 255.255.255.0
+ ip nat inside
+
+ip nat inside source list ACL_NAT interface Cellular0 overload
+ip route 0.0.0.0 0.0.0.0 Cellular0
+!
+ip access-list extended ACL_NAT
+ permit ip 192.168.0.0 0.0.0.255 any
+
+dialer-list 1 protocol ip permit
+
+line 3
+ script dialer hspa-R7
+ modem InOut
+ no exec
+ transport output none
+```
+
+Debug connection:
+```
+debug dialer events
+Dial on demand events debugging is on
+
+terminal monitor
+% Console already monitors
+
+ping 8.8.8.8
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 8.8.8.8, timeout is 2 seconds:
+
+Apr 16 13:00:49.995: Ce0 DDR: place call
+Apr 16 13:00:49.995: Ce0 DDR: Dialing cause ip (s=192.168.1.1, d=8.8.8.8)
+Apr 16 13:00:49.995: Ce0 DDR: Attempting to dial hspa-R7
+Apr 16 13:00:49.995: CHAT3: Attempting async line dialer script
+Apr 16 13:00:49.995: CHAT3: Dialing using Modem script: hspa-R7 & System script: none
+Apr 16 13:00:49.995: CHAT3: process started
+Apr 16 13:00:49.995: CHAT3: Asserting DTR
+Apr 16 13:00:49.995: CHAT3: Chat script hspa-R7 started.
+Apr 16 13:00:51.531: CHAT3: Chat script hspa-R7 finished, status = Success
+Apr 16 13:00:53.531: %LINK-3-UPDOWN: Interface Cellular0, changed state to up.
+Apr 16 13:00:53.531: Ce0 DDR: Dialer statechange to up
+Apr 16 13:00:53.531: Ce0 DDR: Dialer call has been placed
+Apr 16 13:00:53.531: Ce0 DDR: dialer protocol up
+Apr 16 13:00:54.531: %LINEPROTO-5-UPDOWN: Line protocol on Interface Cellular0, changed state to up!!!
+
+Success rate is 60 percent (3/5), round-trip min/avg/max = 40/406/1132 ms
+```
+
+---
+
+
 ## Firepower
 
 ### Packet capture
