@@ -455,6 +455,16 @@ ssh scopy enable
 ssh 10.0.0.0 255.0.0.0 Internal
 ```
 
+## ASA DHCPRELAY
+
+Setup dhcp relay and interface bindings:
+```
+dhcprelay server 1.2.3.4 someinterface
+dhcprelay enable inside
+dhcprelay enable anotherinterface
+dhcprelay timeout 60
+```
+
 ## IOS XE
 
 ### SSH on non-standard port
