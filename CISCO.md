@@ -438,6 +438,22 @@ The tunnel group name is set to the remote peer ip address.
 When negotiating a L2L each peer sends its ISAKMP identity to the remote peer. It sends either its IP address or host name dependent upon how each has its ISAKMP identity set.
 By default, the ISAKMP identity of the ASA is set to the IP address.
 
+## ASA VPN DEBUG
+```
+debug crypto isakmp
+debug crypto ipsec
+debug crypto condition peer 1.2.3.4
+
+show crypto ipsec sa peer 1.2.3.4
+```
+
+
+## ASA Packet capture
+```
+cap capin interface inside match ip 192.168.1.3 255.255.255.255 any
+show cap capin
+```
+
 ## ASA SSH
 
 Create a user and configure local authentication:
