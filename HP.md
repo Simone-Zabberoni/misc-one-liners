@@ -26,6 +26,38 @@ web-management ssl
 no telnet-server
 ```
 
+
+#### Dhcp snooping
+
+Snoop sample:
+```
+dhcp-snooping
+dhcp-snooping vlan 1-1024
+dhcp-snooping trust 49-51
+```
+
+```
+show dhcp-snooping
+
+ DHCP Snooping Information
+
+  DHCP Snooping              : Yes
+  Enabled VLANs              : 1-1024
+  Verify MAC address         : Yes
+  Option 82 untrusted policy : drop
+  Option 82 insertion        : Yes
+  Option 82 remote-id        : mac
+  Store lease database       : Not configured
+
+                  Max     Current Bindings
+   Port  Trust  Bindings  Static   Dynamic
+  -----  -----  --------  ----------------
+    49    Yes      -        -        -
+    50    Yes      -        -        -
+    51    Yes      -        -        -
+
+```
+
 ---
 
 ## Various informations, hardware inventory
