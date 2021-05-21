@@ -465,6 +465,21 @@ dhcprelay enable anotherinterface
 dhcprelay timeout 60
 ```
 
+## ASA Radius server
+
+Multiple radius servers for a single service:
+```
+aaa-server SOME-NAME (someinterface) host 1.2.3.10
+ key astrongpassword
+exit
+
+aaa-server SOME-NAME (someinterface) host 1.2.3.11
+ key anotherstrongpassword
+exit
+
+```
+
+
 ## IOS XE
 
 ### SSH on non-standard port
