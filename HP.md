@@ -136,3 +136,45 @@ Transceiver Technical Information:
   49        | 86 ae 12 1e 1b 00         1      A1        PR_SW01_XXXX
 
 ```
+
+---
+
+# HP Aruba OS CX
+
+## Configuration
+
+
+#### OS CX LAG to Fortigate LACP
+
+On CX switch:
+```
+show running-config interface lag 12
+interface lag 12
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed 1-30
+    lacp mode active
+    lacp rate fast
+    exit
+```
+
+On Fortigate:
+```
+config system interface
+    edit "Some LACP"
+        set vdom "root"
+        set ip 172.17.2.254 255.0.0.0
+        set allowaccess ping
+        set type aggregate
+        set member "x1" "x2"
+        set device-identification enable
+        set lldp-transmission enable
+        set role lan
+        set snmp-index 24
+        set lacp-mode passive
+    next
+end
+```
+
+---
