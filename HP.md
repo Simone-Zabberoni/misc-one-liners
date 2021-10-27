@@ -178,3 +178,73 @@ end
 ```
 
 ---
+
+### 6300 stack PSU and fans
+```
+show environment  power-supply
+
+         Product  Serial                PSU           Wattage
+Mbr/PSU  Number   Number                Status        Maximum
+--------------------------------------------------------------
+1/1      JL085A   xxxxxxxxxx            OK            250
+1/2      JL085A   xxxxxxxxxx            OK            250
+2/1      JL085A   xxxxxxxxxx            OK            250
+2/2      JL085A   xxxxxxxxxx            OK            250
+```
+
+```
+show environment fan
+
+Fan tray information
+--------------------------------------------------------------------------------
+Name  Description                           Status        Serial Number  Fans
+--------------------------------------------------------------------------------
+1/1   JL669A Aruba 6300M Fan Tray           ready         xxxxxxxxxx     2
+1/2   JL669A Aruba 6300M Fan Tray           ready         xxxxxxxxxx     2
+2/1   JL669A Aruba 6300M Fan Tray           ready         xxxxxxxxxx     2
+2/2   JL669A Aruba 6300M Fan Tray           ready         xxxxxxxxxx     2
+Fan information
+---------------------------------------------------------------------------
+Mbr/Fan or    Product  Serial Number  Speed   Direction      Status  RPM
+Mbr/Tray/Fan  Name
+---------------------------------------------------------------------------
+1/1/1         N/A      N/A            slow    front-to-back  ok      4156
+1/1/2         N/A      N/A            slow    front-to-back  ok      4156
+1/2/1         N/A      N/A            slow    front-to-back  ok      4121
+1/2/2         N/A      N/A            slow    front-to-back  ok      4167
+2/1/1         N/A      N/A            slow    front-to-back  ok      4187
+2/1/2         N/A      N/A            slow    front-to-back  ok      4143
+2/2/1         N/A      N/A            slow    front-to-back  ok      4176
+2/2/2         N/A      N/A            slow    front-to-back  ok      4141
+```
+
+### 6200 stack PSU and fans
+```
+show environment power-supply
+
+         Product  Serial                PSU           Wattage
+Mbr/PSU  Number   Number                Status        Maximum
+--------------------------------------------------------------
+1/1      N/A      N/A                   OK            200
+2/1      N/A      N/A                   OK            200
+```
+
+```
+show environment fan
+
+Fan information
+---------------------------------------------------------------------------
+Mbr/Fan       Product  Serial Number  Speed   Direction      Status  RPM
+              Name
+---------------------------------------------------------------------------
+1/1           N/A      N/A            slow    left-to-back   ok      4128
+1/2           N/A      N/A            slow    left-to-back   ok      4192
+1/3           N/A      N/A            slow    left-to-back   ok      4158
+2/1           N/A      N/A            slow    left-to-back   ok      4134
+2/2           N/A      N/A            slow    left-to-back   ok      4172
+2/3           N/A      N/A            slow    left-to-back   ok      4189
+```
+
+
+
+---
