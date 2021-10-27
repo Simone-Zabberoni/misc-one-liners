@@ -1,5 +1,15 @@
 # Windows Cmd & PowerShell
 
+## Putty stuff
+
+### Specific com settings
+```
+PuTTY.exe -sercfg 38400,8,n,1,N  -serial COM9
+PuTTY.exe -sercfg 115200,8,n,1,N -serial COM15
+```
+---
+
+
 ## Generic cmds
 
 Network load balancing and nic teaming:
