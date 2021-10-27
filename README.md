@@ -17,3 +17,4 @@ This is my personal collection of cut/paste commands, snippets and scripts for v
 - [HP](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/HP.md) - HP switches
 - [Raspberry](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/RASPBERRY.md) - Raspberry configuration and misc stuff
 - [IBM](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/IBM.md) - IBM and Thales (Guarium) commands
+- [Security](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/IBM.md) - Generic scripts, command lines and stuff 
