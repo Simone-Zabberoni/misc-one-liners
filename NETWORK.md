@@ -38,6 +38,8 @@ hlogin -u your_admin_user -x fixDNS.cmd 1.2.3.4
 To be refined... but it works: no error checking, be careful.
 It works with hlogin, tested with HP os-cx and s devices.
 
+Files can be found [here](https://github.com/Simone-Zabberoni/misc-one-liners/blob/master/NETWORK). 
+
 Edit `switchList.conf` with the names and addresses of your switch:
 
 ```
