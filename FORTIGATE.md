@@ -132,6 +132,10 @@ end
 
 ### Routing
 
+### MTU and mss
+MTU and MSS Clamp: https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/596096/interface-mtu-packet-size
+
+
 #### Ospf and DUAL gre setup - small mtu, propagation filtering and Cisco ABR
 
 ```
