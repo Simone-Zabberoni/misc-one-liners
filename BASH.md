@@ -133,10 +133,20 @@ Create a CSR for a wildcard cert:
 openssl req -new -newkey rsa:2048 -nodes -out wildcard_somedomain_it.csr -keyout wildcard_somedomain_it.key -subj "/C=IT/ST=IT/L=MyCity/O=MyBusiness/CN=*.somedomain.it"
 ```
 
+Create a self signed key and cert:
+```
+openssl req -new -x509 -newkey rsa:2048 -out selfcert.pem -days 3650
+```
+
 Create a password protected PFX package (key+certfile+chain), usable for IIS, Sophos UTM etc. :
 
 ```
 openssl pkcs12 -export -out somedomain_it.pfx -inkey wildcard_somedomain_it.key -in wildcard_somedomain_it.crt -certfile intermediate_chain.crt
+```
+
+Convert base64 PFX:
+```
+openssl enc -base64 -d -in somedomain_it_base64.pfx -out somedomain_it.pfx
 ```
 
 Extract key and cert from PFX:
