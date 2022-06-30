@@ -496,6 +496,61 @@ exit
 ```
 
 
+## ASA SSL Certificate for SSL VPN
+
+Prepare the password protected PFX from key, certificate and intermediate:
+
+```
+openssl pkcs12 -export -out mydomain.pfx -inkey mydomain.key -in mydomain.crt -certfile intermediate.pem
+password: 123123
+
+```
+
+Convert the binary pfx into base64:
+
+```
+openssl base64 -in mydomain.pfx
+
+```
+
+Paste the output between the headers (ASA expects them!):
+
+```
+-----BEGIN PKCS12-----
+[paste base64 pfx here]
+-----END PKCS12----
+```
+
+On the ASA, define a new trustpoint with a significative name: 
+
+```
+crypto ca trustpoint TRUSTPOINT-SSLVPN-2022
+ fqdn sslvpn.mydomain.com
+ validation-usage ssl-server
+ crl configure
+exit
+enrollment terminal
+exit
+
+```
+
+Enroll the certificate by providing the trustpoint name, the pkcs12 type and the import password, then paste the base64 encoded pfx:
+```
+crypto ca import TRUSTPOINT-SSLVPN-2022 pkcs12 123123
+Enter the base 64 encoded pkcs12.
+End with the word "quit" on a line by itself:
+[paste here]
+```
+
+Activate the new trustpoint:
+
+```
+crypto ikev2 remote-access trustpoint TRUSTPOINT-SSLVPN-2022
+ssl trust-point TRUSTPOINT-SSLVPN-2022 outside
+```
+
+
+
 ## IOS XE
 
 ### SSH on non-standard port
