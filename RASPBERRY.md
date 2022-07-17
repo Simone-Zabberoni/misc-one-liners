@@ -1,6 +1,30 @@
 # Raspberry configurations
 
 
+## Headless basic stuff
+Place these files on the boot directory:
+
+File `ssh` with nothing inside
+
+File `wpa_supplicant.conf` with wireless settings:
+```
+country=IT # Your 2-digit country code
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev # Include this line for Stretch
+network={
+    ssid="yourWifiNet"
+    psk="yourWifipass"
+    key_mgmt=WPA-PSK
+}
+```
+
+File `userconf` with standard pi:raspberry password
+```
+pi:$6$/4.VdYgDm7RJ0qM1$FwXCeQgDKkqrOU3RIRuDSKpauAbBvP11msq9X58c8Que2l1Dwq3vdJMgiZlQSbEXGaY5esVHGBNbCxKLVNqZW1
+```
+
+
+
+
 ## Dhcp Wifi + static ethernet with vlan interfaces
 
 Define vlan interface binding in `/etc/network/interfaces`:
