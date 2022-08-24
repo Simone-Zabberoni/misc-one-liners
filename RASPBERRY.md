@@ -23,7 +23,14 @@ pi:$6$/4.VdYgDm7RJ0qM1$FwXCeQgDKkqrOU3RIRuDSKpauAbBvP11msq9X58c8Que2l1Dwq3vdJMgi
 ```
 
 
+## Troubleshoot 
 
+Hdmi safe mode - https://elinux.org/R-Pi_Troubleshooting#No_HDMI_output_at_all
+
+In config.txt uncomment:
+```
+hdmi_safe=1
+```
 
 ## Dhcp Wifi + static ethernet with vlan interfaces
 
