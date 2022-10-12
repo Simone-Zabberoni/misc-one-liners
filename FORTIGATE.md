@@ -266,6 +266,7 @@ show
 
 #### High availability
 
+Status:
 ```
 # get system ha status
 HA Health Status: OK
@@ -277,6 +278,18 @@ Cluster Uptime: 0 days 16:51:43
 Cluster state change time: 2021-01-22 02:03:35
 Master selected using:
 ```
+
+
+HA access secondary - https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-access-secondary-unit-of-HA-cluster-via-CLI/ta-p/198142
+```
+execute ha manage 0
+```
+
+Force failover:
+```
+diagnose sys ha reset-uptime
+```
+
 
 #### GRE
 ```
