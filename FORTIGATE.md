@@ -214,6 +214,37 @@ end
 
 ```
 
+#### Security profile groups - make it visible from the GUI
+
+```
+config system settings
+	set gui-security-profile-group enable
+end
+
+config firewall profile-group
+edit "some-group"
+set av-profile some-profile
+end
+
+config firewall policy
+edit 0		<- pick an existing policy
+set utm-status enable
+set profile-type group
+set profile-group some-group
+end
+```
+
+
+
+#### Config file patterns
+
+Remove UUID lines - replace 
+```
+        set uuid .*\r\n
+```
+
+
+
 ---
 
 # SHOW 
