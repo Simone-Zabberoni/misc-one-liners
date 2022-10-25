@@ -1,4 +1,4 @@
-# S57xx useful stuff
+# S57xx / 63xx useful stuff
 
 ## Management interface setup
 
@@ -223,6 +223,33 @@ done
 
 ```
 
+## VCMP
+
+VCMP server
+```
+system-view
+vcmp role server
+y
+
+vcmp domain your-vcmp-domain
+vcmp device-id your-switch-name
+vcmp authentication sha2-256 password some-password
+```
+
+VCMP client
+```
+vcmp role client
+vcmp domain your-vcmp-domain
+vcmp authentication sha2-256 password some-password
+```
+
+## Simple vlan interface and routing
+```
+interface Vlanif10
+ ip address 10.0.10.1 255.255.255.0
+ip route-static 0.0.0.0 0.0.0.0 Vlanif10 10.0.10.254 
+```
+
 ## Stack setup
 
 On the first device set the maximum priority (100 by default):
@@ -261,6 +288,23 @@ Slot      Role        MAC Address      Priority   Device Type
 0         Master      xxxx-xxxx-xxxx   100        S5730-48C-SI-AC
 1         Standby     xxxx-xxxx-xxxx   50         S5730-48C-SI-AC
 ```
+
+
+Stack configuration reset - if something goes wrong
+```
+<HUAWEI>system-view
+Enter system view, return user view with Ctrl+Z.
+[HUAWEI]reset stack configuration
+Warning: This operation will clear all stack configurations and may lead to the loss of the slot ID configuration and cause the device to reset immediately. Are you sure you want to continue? [Y/N]:y
+Info: This operation may take a few seconds. Please wait.....
+```
+
+
+Stack node selective reload
+```
+reset slot slot-id command to restart a specified stack member device. slot-id specifies the stack ID of a member device.
+```
+
 
 Other commands
 
@@ -413,6 +457,33 @@ Run custom commands:
 # h3clogin -u admin -c 'display current' 1.2.3.4
 
 ```
+
+## SSH setup, disable telnet
+
+```
+system-view
+ssh server key-exchange dh_group14_sha256
+ssh server cipher aes256_ctr
+
+dsa local-key-pair create
+
+
+undo telnet server enable
+stelnet server enable
+ssh server-source -i Vlanif 168
+y
+quit
+
+system-view
+user-interface vty 0 4
+idle-timeout 0
+authentication-mode aaa
+protocol inbound ssh
+quit
+
+```
+
+
 
 ## Logging
 
