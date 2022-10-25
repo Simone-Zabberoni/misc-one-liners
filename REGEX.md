@@ -73,3 +73,20 @@ Grep PCRE with non capturing head and tail:
 echo "<bah>6767</bah>" |  grep -oP  "<bah>\K([0-9]+)(?=<\/bah>)"
 6767
 ```
+
+Perl capture last token between {}:
+
+```
+# echo '{EF}{04}{04}{01}' | perl -lne 'print $1 if /(?:{\w\w}){3}{(\w\w)}/'
+01
+```
+
+Same stuff, capture first and second:
+```
+echo '{EF}{04}{04}{01}' | perl -lne 'print $1 if /(?:{\w\w}){0}{(\w\w)}/'
+EF
+echo '{EF}{04}{04}{01}' | perl -lne 'print $1 if /(?:{\w\w}){1}{(\w\w)}/'
+04
+```
+
+
