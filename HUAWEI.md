@@ -31,6 +31,45 @@ reboot
 Warning: It will take a few minutes to upgrade firmware. Please do not switchover, reset, remove, or power off the board when upgrade is being performed. Please keep system stable..................................................................................................................................
 ```
 
+## Confirm startup firmware and patch:
+```
+<SW-SAMPLE>display startup
+MainBoard:
+  Configured startup system software:        flash:/s5735-l1-v200r021c00spc100.cc
+  Startup system software:                   flash:/s5735-l1-v200r021c00spc100.cc
+  Next startup system software:              flash:/s5735-l1-v200r021c00spc100.cc
+  Startup saved-configuration file:          flash:/vrpcfg.zip
+  Next startup saved-configuration file:     flash:/vrpcfg.zip
+  Startup paf file:                          default
+  Next startup paf file:                     default
+  Startup license file:                      default
+  Next startup license file:                 default
+  Startup patch package:                     NULL
+  Next startup patch package:                flash:/s5735-l-v200r021sph180.pat
+```
+
+## Manual patch loading (this does nothing... but...)
+```
+<SW-SAMPLE>patch load s5735-l-v200r021sph180.pat all run
+Info: The patch is being loaded. Please wait for a moment...
+Info: The master board does not have C patch to be loaded.
+Info: The master board does not have kernel patch to be loaded.
+Info: The master board does not have bin patch to be run.
+Info: Finished loading the patch.
+
+<SW-SAMPLE>patch active all.
+Info: The master board does not have C patch to be activated.
+Info: The master board does not have kernel patch to be activated.
+Info: The master board does not have bin patch to be activated..
+Info: Finished activating the patch.
+
+<SW-SAMPLE>patch run all.
+Info: The master board does not have C patch to be run.
+Info: The master board does not have kernel patch to be run.
+Info: The master board does not have bin patch to be run..
+Info: Finished running the patch.
+```
+
 ## Factory reset & reboot
 
 ```
@@ -483,6 +522,21 @@ quit
 
 ```
 
+## https server binding on interface
+```
+system-view
+http server-source -i Vlanif90
+y
+quit
+```
+
+## DNS setup
+```
+system-view
+dns resolve
+dns server 8.8.8.8
+quit
+```
 
 
 ## Logging
@@ -501,6 +555,12 @@ Filter out noisy logs:
 ```
 info-center filter-id bymodule-alias FSP AUTOCONFIGFAILED
 ```
+
+## Local log show
+```
+display logfile logfile/log.log
+```
+
 
 ## Interface mirroring
 
