@@ -330,6 +330,50 @@ get router info routing-table static
 get router info routing-table connected
 get router info routing-table all
 ```
+
+Full database (including IPSEC static auto add with distance 15 - reference bug 833399 in 7.2.2 and 7.2.3)
+Example with 2 default routes and 2 ipsec with selector 0.0.0.0/0 - with the bug!
+
+```
+get router info routing-table database 
+
+Codes: K - kernel, C - connected, S - static, R - RIP, B - BGP
+       O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       V - BGP VPNv4
+       > - selected route, * - FIB route, p - stale info
+
+Routing table for VRF=0
+S       0.0.0.0/0 [15/0] via some_IPSEC_A tunnel 1.2.3.4, [1/0]
+                  [15/0] via some_IPSEC_B tunnel 6.7.8.9, [1/0]
+S    *> 0.0.0.0/0 [10/0] via a.a.a.a, port1, [200/0]
+     *>           [10/0] via b.b.b.b, port2, [201/0]
+```
+
+Routing decision for a specific destination (also in this case, with the 833399 bug):
+```
+get router info routing-table details 8.8.8.8
+
+Routing table for VRF=0
+Routing entry for 0.0.0.0/0
+  Known via "static", distance 15, metric 0
+    via some_IPSEC_A tunnel 1.2.3.4 vrf 0
+    via some_IPSEC_B tunnel 6.7.8.9 vrf 0
+
+Routing entry for 0.0.0.0/0
+  Known via "static", distance 10, metric 0, best
+  * vrf 0 a.a.a.a, via port1
+  * vrf 0 b.b.b.b, via port2
+```
+
+Routes added by ipsec:
+```
+diagnose vpn ike routes list
+```
+
+
 #### OSPF Routing tables
 ```
 A_FG # get router info ospf neighbor
