@@ -234,14 +234,80 @@ set profile-group some-group
 end
 ```
 
+---
 
-
-#### Config file patterns
+### Config file patterns
 
 Remove UUID lines - replace 
 ```
         set uuid .*\r\n
 ```
+
+
+
+---
+
+### Fortiswitch
+
+Note: -running, to be completed-
+
+
+Tier2 switch configuration in a 3 tier MCLAG setup (configurazion of Tier2 switch 1)
+
+```
+show switch auto-isl-port-group
+
+config switch auto-isl-port-group
+    edit "tier3-rackA-sw1"
+            set members "port1"
+    next
+    edit "tier3-rackB-sw1"
+            set members "port2"
+    next
+    edit "tier3-rackC-sw1"
+            set members "port3"
+    next
+end
+```
+
+```
+show switch trunk
+config switch trunk
+    edit "SerialNumberOfTier2Switch-1"              <- to Tier2 partner
+        set mode lacp-active
+        set auto-isl 1
+        set mclag-icl enable
+            set members "port21" "port22"
+    next
+    edit "_FlInK1_MLAG0_"                           <- to tier1
+        set mode lacp-active
+        set auto-isl 1
+        set mclag enable
+            set members "port24"
+    next
+    edit "tier3-rackA-sw1"
+        set mode lacp-active
+        set auto-isl 1
+        set mclag enable
+            set members "port1"
+    next
+    edit "tier3-rackA-sw1"
+        set mode lacp-active
+        set auto-isl 1
+        set mclag enable
+            set members "port2"
+    next
+    edit "tier3-rackA-sw1"
+        set mode lacp-active
+        set auto-isl 1
+        set mclag enable
+            set members "port3"
+    next
+end
+```
+
+
+
 
 
 
@@ -557,6 +623,34 @@ execute update-now
 https://[Address]:[port]/api/v2/cmdb/vpn.ipsec/phase1-interface?plain-text-password=1
 ```
 
+
+---
+
+#### Fortiswitch debug stuff
+To view the MSTP configuration details, use the following commands:
+
+```
+get switch stp instance
+get switch stp settings
+```
+ 
+
+Use the following commands to display information about the MSTP instances in the network:
+```
+diagnose stp instance list
+diagnose stp vlan list
+diagnose stp mst-config list
+```
+
+Trunks
+```
+diagnose switch trunk list
+```
+
+MCLAG debug:
+```
+diagnose switch mclag peer-consistency-check
+```
 
 ---
 
