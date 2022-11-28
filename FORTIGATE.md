@@ -243,6 +243,98 @@ Remove UUID lines - replace
         set uuid .*\r\n
 ```
 
+---
+
+### Backup
+
+#### System profile for RestAPI backup
+
+Read/write settings for a RESTAPI admin capable of backing up the conf.
+Note that `"set scope global"` seems to be configurable only via CLI (otherwise a FW with VDOM will respond 403 to the backup request)
+
+```
+configure system accprofile
+    edit "RestAdminBck"
+        set scope global
+        set secfabgrp read
+        set ftviewgrp read
+        set authgrp read
+        set sysgrp custom
+        set netgrp read
+        set loggrp read
+        set fwgrp read
+        set vpngrp read
+        set utmgrp read
+        set wanoptgrp read
+        set wifi read
+        config sysgrp-permission
+            set admin read-write
+            set upd read
+            set cfg read
+            set mnt read
+        end
+    next
+end
+```
+
+#### Backup api
+
+Create a rest admin with the RestAdminBck profile, save its token and use this string in a shell script (via curl or wget):
+```
+https://$FGFQDN:$Port/api/v2/monitor/system/config/backup?scope=global&access_token=$API_Key
+```
+
+
+#### SCP Backup
+Create a dedicated backup admin with SSH Key authentication
+
+https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-authenticate-an-admin-user-to-FortiGate-via/ta-p/190221
+
+
+Enable scp:
+```
+config system global set admin-scp enable end
+```
+
+Copy the conf:
+
+```
+scp your_backup_user@$ARG_HOST:fgt-config $ARG_FILE
+```
+
+
+#### RANCID backup - via ssh
+
+Create a dedicate user (see above)
+
+Check if your rancid setup "knows" Fortigate
+```
+grep  "fortigate::GetConf" /etc/rancid/rancid.types.base
+
+fortigate;command;fortigate::GetConf;show
+fortigate-full;command;fortigate::GetConf;show full-configuration
+```
+
+Sample router.db for Fortigate firewall:
+```
+cat router.db
+
+1.2.3.4;fortigate-full;up
+```
+
+Sample .cloginrc for Fortigate firewall:
+```
+cat .cloginrc
+
+add user 1.2.3.4 ScpBackup
+add password 1.2.3.4 a_very_strong_password
+add method 1.2.3.4 ssh
+add identity  * /home/rancid/.ssh/id_rsa            <- better with keys!
+```
+
+Then use rancid-run or flogin.
+
+
 
 
 ---
