@@ -150,6 +150,12 @@ Get-ADGroup -Filter 'GroupCategory -eq "Security"' | fl *
 Get-ADGroup -Filter 'Name -eq "GroupName"'
 ```
 
+Count users in a specific group:
+
+```
+(Get-ADGroup SomeGroupName -Properties *).Member.Count
+```
+
 Create a group in a specific OU:
 
 ```
