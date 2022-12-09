@@ -243,6 +243,54 @@ Remove UUID lines - replace
         set uuid .*\r\n
 ```
 
+
+---
+
+### FSSO
+
+
+https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-enable-audit-of-logon-events-on-Windows/ta-p/189816
+https://docs.fortinet.com/document/fortigate/7.2.0/administration-guide/450337/fsso
+https://community.fortinet.com/t5/FortiGate/Technical-Tip-FSSO-Collector-agent-redundancy-with-two-Windows/ta-p/191577
+https://docs.fortinet.com/document/fortigate/7.2.0/administration-guide/503764/fsso-polling-connector-agent-installation
+
+Single connector with redundancy (do the same with LDAP):
+
+```
+config user fsso
+edit "fsso-conn-redundant"
+        set server "10.10.10.1"
+        set password ENC ***
+        set server2 "10.10.10.2"
+        set password2 ENC ***
+    next
+end
+```
+
+List FSSO logon user on the FortiGate.
+ ```
+# diag debug authd fsso list
+```
+List authenticated users on the FortiGate.
+``` 
+# diag firewall auth list
+```
+List connected FSSO CA.
+``` 
+# diag debug reset
+# diag debug enable
+# diag debug authd fsso server-status
+```
+
+Debugging authentication process
+```
+# diag debug reset
+# diag debug console timestamp enable
+# diag debug application authd -1
+# diag debug application fnbamd -1
+# diag debug enable
+```
+
 ---
 
 ### Backup
