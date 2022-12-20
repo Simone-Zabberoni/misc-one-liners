@@ -539,6 +539,20 @@ quit
 ```
 
 
+## SNMP
+```
+snmp-agent
+snmp-agent community read cipher BLAHBLAH
+snmp-agent sys-info contact yourmail@tld
+snmp-agent sys-info location yourLocation
+snmp-agent sys-info version v2c
+undo snmp-agent sys-info version v3
+undo snmp-agent protocol source-status all-interface
+snmp-agent protocol source-interface Vlanif123
+undo snmp-agent protocol source-status ipv6 all-interface
+```
+
+
 ## Logging
 
 Setup a remote syslog with a specific log level:
