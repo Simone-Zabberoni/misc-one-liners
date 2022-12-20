@@ -162,6 +162,17 @@ Check a Certificate Signing Request (CSR)
 openssl req -text -noout -verify -in CSR.csr
 ```
 
+Create a Certificate Signing Request (CSR) from existing key
+```
+openssl req -new -key somedomain_it.key -out somedomain_it.csr
+```
+
+Create a signed CRT from CSR and key:
+```
+openssl x509 -signkey somedomain_it.key  -days 1095  -req -in somedomain_it.csr -out somedomain_it.crt -sha256
+```
+
+
 Check a private key
 
 ```
