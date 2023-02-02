@@ -262,7 +262,7 @@ done
 
 ```
 
-## VCMP
+## VCMP (automatic vlan propagation - similar to Cisco VTP)
 
 VCMP server
 ```
