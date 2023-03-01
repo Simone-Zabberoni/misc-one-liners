@@ -139,8 +139,33 @@ Requires:
 
 ---
 
-## QRadar
+# QRadar
 
-TBD.
 
+
+### Misc
+
+Check postgres version from db itself
+
+```
+xpsql -U qradar -t -c "select VERSION();"
+ PostgreSQL 11.16 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44), 64-bit
+```
+
+
+### Applications
+
+Application list with id and status:
+```
+psql -U qradar -c "select id,name,status from installed_application_instance"
+
+  id  |               name                | status
+------+-----------------------------------+---------
+ 1856 | Cisco Cloud Security              | RUNNING
+ 1056 | Incident Overview                 | RUNNING
+ 1052 | Reference Data Import - LDAP      | RUNNING
+ 2101 | QRadar Assistant                  | RUNNING
+ 2053 | User Analytics                    | ERROR
+ 1853 | IOC Manager for QRadar            | RUNNING
+```
 
