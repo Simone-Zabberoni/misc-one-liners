@@ -142,6 +142,23 @@ Requires:
 # QRadar
 
 
+### Backups
+
+Location for system and app backup
+
+```
+ls /store/backup/back* -alsh
+
+2.7G -rw-r--r-- 1 root root 2.7G Feb 28 00:05 /store/backup/backup.nightly.xxxxxxxxxxxxxx.27_02_2023.config.1677539136013.tgz
+2.7G -rw-r--r-- 1 root root 2.7G Mar  1 00:05 /store/backup/backup.nightly.xxxxxxxxxxxxxx.28_02_2023.config.1677625535505.tgz
+
+
+ls  /store/apps/backup/back* -alsh
+
+1.6G -rw-r--r-- 1 root root 1.6G Feb 28 02:41 /store/apps/backup/backup.apps-volumes.all.1677547803.tgz
+1.7G -rw-r--r-- 1 root root 1.7G Mar  1 02:42 /store/apps/backup/backup.apps-volumes.all.1677634202.tgz
+```
+
 
 ### Misc
 
