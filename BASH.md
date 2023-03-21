@@ -526,6 +526,22 @@ MariaDB [zabbixdb]> show table status where collation not like 'utf8_bin';
 5 rows in set (1 min 31.85 sec)
 ```
 
+## NETPLAN
+Static IP configuration
+```
+cat /etc/netplan/99_config.yaml
+
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens32:
+     dhcp4: no
+     addresses: [192.168.238.30/24]
+     gateway4: 192.168.238.2
+     nameservers:
+       addresses: [192.168.238.2]
+```
 
 
 ## NOIP
