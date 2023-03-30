@@ -438,6 +438,76 @@ The tunnel group name is set to the remote peer ip address.
 When negotiating a L2L each peer sends its ISAKMP identity to the remote peer. It sends either its IP address or host name dependent upon how each has its ISAKMP identity set.
 By default, the ISAKMP identity of the ASA is set to the IP address.
 
+
+
+## ASA IKEv2 PSK VPN EXAMPLE
+
+```
+crypto ikev2 policy 10
+ encryption aes-256
+ integrity sha256
+ group 5 2 1
+ prf sha256
+ lifetime seconds 7200
+
+crypto ikev2 policy 20
+ encryption aes-256
+ integrity sha512
+ group 20
+ prf sha512
+ lifetime seconds 7200
+
+crypto ikev2 policy 30
+ encryption aes-256
+ integrity sha256
+ group 14
+ prf sha256
+ lifetime seconds 86400
+
+
+crypto ipsec ikev2 ipsec-proposal IKEv2-AES256-SHA256
+ protocol esp encryption aes-256
+ protocol esp integrity sha-256
+ 
+crypto ipsec ikev2 ipsec-proposal IKEv2-AES256-SHA1
+ protocol esp encryption aes-256
+ protocol esp integrity sha-1
+
+
+
+object-group network MY_REMOTE_NET
+ network-object 192.168.27.0 255.255.255.0
+ 
+object-group network MY_LOCAL_NET
+ network-object 192.168.57.0 255.255.255.0
+
+access-list FromInside extended permit ip object MY_LOCAL_NET object-group MY_REMOTE_NET
+access-list VPN-REMOTE_NET extended permit ip object MY_LOCAL_NET object-group MY_REMOTE_NET
+
+nat (inside,outside) source static MY_LOCAL_NET MY_LOCAL_NET destination static MY_REMOTE_NET MY_REMOTE_NET
+
+crypto map SOME-MAP 2222 match address VPN-REMOTE_NET
+crypto map SOME-MAP 2222 set pfs group14
+crypto map SOME-MAP 2222 set peer 1.2.3.4
+crypto map SOME-MAP 2222 set ikev2 ipsec-proposal IKEv2-AES256-SHA256
+crypto map SOME-MAP 2222 set security-association lifetime seconds 28800
+
+group-policy VPN-REMOTE_NET internal
+group-policy VPN-REMOTE_NET attributes
+ vpn-tunnel-protocol ikev2
+
+tunnel-group 1.2.3.4 type ipsec-l2l
+tunnel-group 1.2.3.4 general-attributes
+ default-group-policy VPN-REMOTE_NET
+tunnel-group 1.2.3.4 ipsec-attributes
+ isakmp keepalive threshold 10 retry 10
+ ikev2 remote-authentication pre-shared-key VERYLONGPSK
+ ikev2 local-authentication pre-shared-key VERYLONGPSK
+
+```
+
+
+
 ## ASA VPN DEBUG
 ```
 debug crypto isakmp
