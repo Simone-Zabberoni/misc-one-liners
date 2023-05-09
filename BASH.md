@@ -42,6 +42,14 @@ Search for pattern in all php files, remove only the matching line from the file
 find /var/www -name '*.php*' -exec grep -l '\@assert(base64_decode(\$_REQUEST\["array"\]' {} \; -exec sed -i '/\@assert(base64_decode(\$_REQUEST\["array"\]/d' {} \;
 ```
 
+Add chars at beginning and end of line (ie: creating wildcards):
+```
+sort somedomains  | uniq | sed 's/\(^\|$\)/*/g'
+*ancillarycheese.com*
+*auth-verify.com*
+*bloemlight.com*
+```
+
 ## Curl
 
 Whatsmyip:
