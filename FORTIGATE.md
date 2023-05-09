@@ -293,6 +293,44 @@ Debugging authentication process
 
 ---
 
+### VPN with SAML authentication
+
+https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/584456/configuring-saml-sso-login-for-ssl-vpn-with-azure-ad-acting-as-saml-idp
+https://learn.microsoft.com/en-us/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
+https://learn.microsoft.com/it-it/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
+
+config user saml
+    edit "azure"
+        set cert "Fortinet_CA_SSL"
+        set entity-id "https://192.168.2.99:8443/remote/saml/metadata"
+        set single-sign-on-url "https://192.168.2.99:8443/remote/saml/login"
+        set single-logout-url "https://192.168.2.99:8443/remote/saml/login"
+        set idp-entity-id "https://sts.windows.net/SOME_ID/"
+        set idp-single-sign-on-url "https://login.microsoftonline.com/SOME_ID/saml2"
+        set idp-single-logout-url "https://login.microsoftonline.com/SOME_ID/saml2"
+        set idp-cert "REMOTE_Cert_1"
+        set user-name "username"
+        set group-name "group"
+        set digest-method sha1
+    next
+end
+
+config user group
+    edit "FortiGateAccess"
+        set member "azure"
+        config match
+            edit 1
+                set server-name "azure"
+                set group-name "GROUP_ID_HERE"
+            next
+        end
+    next
+end
+
+
+
+---
+
 ### Backup
 
 #### System profile for RestAPI backup
