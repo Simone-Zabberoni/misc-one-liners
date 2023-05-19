@@ -7,6 +7,18 @@
 PuTTY.exe -sercfg 38400,8,n,1,N  -serial COM9
 PuTTY.exe -sercfg 115200,8,n,1,N -serial COM15
 ```
+
+
+### Shortcut for local port forward
+```
+putty -L 2222:some-host-to-jump-to:22  root@yourlinux
+```
+
+then:
+```
+putty root@127.0.0.1 -P 2222            <- ssh to some-host-to-jump-to
+```
+
 ---
 
 
