@@ -5,6 +5,12 @@
 ## Guardium / Vormetric / CTE VTE LDT - Transparent file encryption
 
 
+### API example - decrypt LDT guarded GP
+
+https://thalesdocs.com/ctp/cm/2.5/admin/cte_ag/cte-api-examples/cte-decrypt-ldt/index.html
+
+
+
 ### Voradmin agent stuff
 
 
