@@ -703,6 +703,21 @@ LastLogoffTime : 31/10/2018 03:05:57
 TotalItemSize  : 16.93 MB (17,749,891 bytes)
 ```
 
+Just get emails from a specific identity:
+```
+Get-Mailbox -Identity someone@domain.com | fl EmailAddresses
+```
+
+Find a username by associated email address:
+```
+Get-Mailbox -Identity * | Where-Object {$_.EmailAddresses -like '*someone*@somedomain.com'} | Format-List Identity, EmailAddresses
+```
+
+Export email addresses to CSV:
+```
+get-mailbox -Identity *| select-object Identity, EmailAddresses | export-csv Addresses.csv -NoTypeInformation
+```
+
 ### Permissions
 
 Manage folder and shared calendar permissions:
