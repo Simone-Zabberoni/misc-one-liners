@@ -102,6 +102,16 @@ Search for any AD user wich contains a string:
 get-aduser -filter 'Name -like "*zabberoni*"'
 ```
 
+List all properties:
+```
+get-aduser szabberoni -properties *
+```
+
+List email properties:
+```
+get-aduser szabberoni -properties EmailAddress, ProxyAddresses
+```
+
 List all users and respective home and logon script:
 
 ```
