@@ -64,6 +64,26 @@ set interface "port2"
 next
 end
 ```
+---
+
+
+### HA, virtual mac, group id
+
+From https://community.fortinet.com/t5/FortiGate/Technical-Tip-A-conflict-HA-virtual-MAC-address-in-the-different/ta-p/189577 :
+
+*Due to different reasons, operating multiple HA clusters under the same Security fabric also requires unique HA group-ids, even if they don't reside on the same network.*
+
+Set a different group id on different clusters 
+ie: 
+- cluster1: node A and B will have group id 10
+- cluster2: node C and D will have group id 20
+
+```
+config system ha
+    set group-id  XX          <----- ( XX is an integer value from 0-255).
+end
+```
+
 
 ---
 
