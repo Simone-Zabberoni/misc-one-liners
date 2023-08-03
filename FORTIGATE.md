@@ -319,6 +319,7 @@ https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administra
 https://learn.microsoft.com/en-us/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
 https://learn.microsoft.com/it-it/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
 
+```
 config user saml
     edit "azure"
         set cert "Fortinet_CA_SSL"
@@ -334,7 +335,8 @@ config user saml
         set digest-method sha1
     next
 end
-
+```
+```
 config user group
     edit "FortiGateAccess"
         set member "azure"
@@ -346,7 +348,7 @@ config user group
         end
     next
 end
-
+```
 
 
 ---
