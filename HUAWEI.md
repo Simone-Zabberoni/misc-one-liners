@@ -552,6 +552,15 @@ snmp-agent protocol source-interface Vlanif123
 undo snmp-agent protocol source-status ipv6 all-interface
 ```
 
+## LLDP over SNMP
+
+Needed if you use netdisco or if you need to access lldp info through snmp:
+
+```
+snmp-agent mib-view included iso-view iso
+snmp-agent community read cipher some_community mib-view iso-view
+```
+
 
 ## Logging
 
