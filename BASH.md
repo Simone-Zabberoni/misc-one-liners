@@ -207,6 +207,18 @@ openssl x509 -in certificate.crt -pubkey -noout -outform pem | sha256sum
 openssl req -in CSR.csr -pubkey -noout -outform pem | sha256sum
 ```
 
+
+Simple CA and client certificate (https://support.huawei.com/enterprise/en/doc/EDOC1000178174/b81cd830/why-the-lldp-neighbor-information-cannot-be-obtained-through-snmp-or-the-operations-performed-on-lldp-mib-objects-do-not-take-effect)
+
+```
+openssl genrsa 2048 > ca-key.pem
+openssl req -new -x509 -nodes -days 1000 -key ca-key.pem > ca-cert.pem
+openssl req -newkey rsa:2048 -days 1000 -nodes -keyout client-key1.pem > client-req.pem
+openssl x509 -req -in client-req.pem -days 1000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 > client-cert1.pem
+openssl pkcs12 -export -in client-cert1.pem -inkey client-key1.pem -out client-cert1.pfx
+```
+
+
 ## Samba
 
 Create an account file for smbclient (awful plaintext):
