@@ -556,6 +556,9 @@ undo snmp-agent protocol source-status ipv6 all-interface
 
 Needed if you use netdisco or if you need to access lldp info through snmp:
 
+Rif: https://support.huawei.com/enterprise/en/doc/EDOC1000178174/b81cd830/why-the-lldp-neighbor-information-cannot-be-obtained-through-snmp-or-the-operations-performed-on-lldp-mib-objects-do-not-take-effect
+
+
 ```
 snmp-agent mib-view included iso-view iso
 snmp-agent community read cipher some_community mib-view iso-view
