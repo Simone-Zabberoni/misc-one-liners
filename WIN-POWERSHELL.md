@@ -868,6 +868,12 @@ More tips on [http://powershell-guru.com/powershell-tip-89-list-shares-on-local-
 netsh dhcp server export C:\dhcp-backup.bck all
 ```
 
+## Wireless configuration with cleartext key 
+
+```
+netsh wlan show profile name="your_ssid" key=clear
+```
+
 ## NPS Network Policy Server - Microsoft RADIUS
 
 Add radius clients:
