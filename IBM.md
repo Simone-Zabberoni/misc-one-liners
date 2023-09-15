@@ -147,6 +147,62 @@ Requires:
 
 # QRadar
 
+## Console
+
+### Version
+
+Retrieve version, fixpack, ip addresses etc.
+
+```
+/opt/qradar/bin/myver -v
+
+Product is 'QRadar'
+Appliance is 'software'
+Core version is '2021.6.1.20220215133427'
+Latest version is '2021.6.1.20220215133427'
+Branded version is ''
+External version is '7.5.0'
+Branded latest version is ''
+Release name is '7.5.0 UpdatePackage 1'
+Version installed with is '7.3.2.20190410024210'
+Internal version is '2021.6.1.0'
+RPM version is '2021.6.1.20220215133427'
+RPM external version is '7.5.0'
+QRM enabled: 'false'
+QRM DB enabled: 'false'
+QVM DB enabled: 'true'
+QF DB enabled: 'false'
+Graph DB enabled: 'false'
+Console: 'true'
+Console IP: '1.2.3.4'
+IP address: '1.2.3.4'
+Virtual IP: '1.2.3.4'
+Virtual Hostname: 'myqradar'
+Vendor: 'xxxx'
+Branded Product Name: 'QRadar'
+Product Description: 'QRadar'
+Kernel architecture: 'x86_64'
+CPU supports 64bit: 'true'
+Operating System: 'Red Hat Enterprise Linux Server release 7.9 (Maipo)'
+HA identity: 'N/A'
+Connection to Console is encrypted: 'false'
+Docker enabled: 'true'
+Supports Apps: 'true'
+DNS: '1.2.3.5', '1.2.3.6'
+Internal Hostname: 'something.localdeployment'
+FIPS enabled: 'false'
+Secure boot status: 'Only available on EFI firmware systems'
+```
+
+### Change qradar ip address
+
+Changing the network settings in an All-in-One system
+https://www.ibm.com/docs/en/qsip/7.5?topic=nsm-changing-network-settings-in-all-in-one-system
+
+Use `qchange_netsetup` from a local connection (drac or VmWare console)
+
+
+
 
 ### Backups
 
@@ -191,4 +247,30 @@ psql -U qradar -c "select id,name,status from installed_application_instance"
  2053 | User Analytics                    | ERROR
  1853 | IOC Manager for QRadar            | RUNNING
 ```
+---
+
+## Wincollect
+
+### Token refresh
+
+Navigate to the bin directory for the WinCollect agent. The default path is C:\Program Files\IBM\WinCollect\bin.
+To change the authentication token for your WinCollect agent, type:
+```
+InstallHelper.exe -T xxxxx-xxxx-xxxx-xxxx-xxxxx
+```
+
+### Change destination qradar ip address/hostname
+
+https://www.ibm.com/support/pages/wincollect-how-change-or-update-qradar-appliance-manages-agent-updated
+
+Stop the Wincollect service, then edit the file `install_config.txt` located in `%Program Files\IBM\WinCollect\config%`
+
+Modify `ConfigurationServer` and `StatusServer` with the new ip address of FQDN of QRadar, then restartthe  Wincollect service
+
+
+
+
+
+
+
 
