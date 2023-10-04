@@ -251,6 +251,16 @@ psql -U qradar -c "select id,name,status from installed_application_instance"
 
 ## Wincollect
 
+
+### Intall from commandline
+
+Written on `"CmdLine.txt"` in the install dir:
+
+```
+wincollect-7.2.9-72.x64.exe /s /v"/qn INSTALLDIR=\"C:\Program Files\IBM\WinCollect\" AUTHTOKEN=xxxxxxx-xxxxx-xxxxx-xxxxx-xxxxxx FULLCONSOLEADDRESS=_QRADAR_FQDN_:8413 HOSTNAME=_CURRENT_SERVER_ LOG_SOURCE_AUTO_CREATION_ENABLED=True LOG_SOURCE_AUTO_CREATION_PARAMETERS=""Component1.AgentDevice=DeviceWindowsLog&Component1.Action=create&Component1.LogSourceName=_CURRENT_SERVER_&Component1.LogSourceIdentifier=_CURRENT_SERVER_&Component1.Log.Security=true&Component1.Log.System=true&Component1.Log.Application=true&Component1.Log.DNS+Server=false&Component1.Log.File+Replication+Service=false&Component1.Log.Directory+Service=false&Component1.Destination.Name=_QRADAR_FQDN_&Component1.RemoteMachinePollInterval=3000&Component1.EventRateTuningProfile=High+Event+Rate+Server&Component1.MinLogsToProcessPerPass=1250&Component1.MaxLogsToProcessPerPass=1875"""
+```
+
+
 ### Token refresh
 
 Navigate to the bin directory for the WinCollect agent. The default path is C:\Program Files\IBM\WinCollect\bin.
