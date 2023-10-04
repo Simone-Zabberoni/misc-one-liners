@@ -20,6 +20,29 @@ putty root@127.0.0.1 -P 2222            <- ssh to some-host-to-jump-to
 ```
 
 
+### Jumphost with multiple tunnel and tunnel-on-tunnel with plink
+
+#### Example situation
+my windows pc -> myjumphost   : only tcp 22 allowed
+myjumphost    -> myremotehost : only tcp 22 allowed
+myremotehost  -> lasttarget	  : only tcp 22 allowed
+
+#### Needs
+Connect directly from my windows pc to myremotehost on port 22 and 9392
+Connect directly from my windows pc to lasttarget on port 22
+
+#### Setup
+sshpass on jumphost for testing (but it's better to use ssh keys)
+```
+plink -ssh root@myjumphost -A -L 2222:myremotehost:22 -L 9392:127.0.0.1:19392 sshpass -f .sshpass ssh -o StrictHostKeyChecking=no  root@myremotehost -g -A -L 19392:127.0.0.1:9392
+
+plink -ssh root@myjumphost -A -L 2222:myremotehost:22 -L 9392:127.0.0.1:19392 sshpass -L 3333:127.0.0.1:13333 -f .sshpass ssh -o StrictHostKeyChecking=no  root@myremotehost -g -A -L 19392:127.0.0.1:9392 -L 13333:lasttarget:22
+```
+
+#### Explanation
+my windows pc: putty -P 2222 root@localhost -> myremotehost:22 through first tunnel
+my windows pc: browse localhost:9392 		-> myremotehost:9392 through double tunnel on port 19329 (see matching 19392 ports on plink and ssh command)
+my windows pc: putty -P 3333 root@localhost	-> lasttarget:22 through double tunnel on port 13333 (see matching 13333 ports on plink and ssh command)
 
 
 ---
