@@ -207,6 +207,12 @@ openssl x509 -in certificate.crt -pubkey -noout -outform pem | sha256sum
 openssl req -in CSR.csr -pubkey -noout -outform pem | sha256sum
 ```
 
+Match certificate and CA
+```
+openssl verify -verbose -CAfile ca.pem  client.pem
+client.pem: OK
+```
+
 
 Simple CA and client certificate (https://support.huawei.com/enterprise/en/doc/EDOC1000178174/b81cd830/why-the-lldp-neighbor-information-cannot-be-obtained-through-snmp-or-the-operations-performed-on-lldp-mib-objects-do-not-take-effect)
 
