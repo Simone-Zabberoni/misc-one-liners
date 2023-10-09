@@ -944,3 +944,16 @@ function Send-UdpDatagram
 
 Send-UdpDatagram -EndPoint "127.0.0.1" -Port 8125 -Message "test.mymetric:0|c"
 ```
+
+## Microsoft CA
+
+
+Extract CA from MS, default in binary format:
+```
+certutil -ca.cert dccert.cer					
+```
+
+Convert it to ASCII
+```
+certutil -encode dccert.cer my-CA.pem
+```
