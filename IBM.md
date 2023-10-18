@@ -279,7 +279,27 @@ Modify `ConfigurationServer` and `StatusServer` with the new ip address of FQDN 
 
 
 
+### Wincollect agent connection issues
 
+After QRAdar ip change, some weird Wincollect issues can arise...
+
+Some fixes to try in sequence (stop and start wincollect agent before and after changes):
+
+1) Replace the old ip with the new one (or FQDN) into `Agentconfig.xml`
+Use IP or FQDN, not the Wincollect destination name
+
+2) Rename the old agent key in the QRadar's store
+```
+cd /store/configservices/wincollect/configserver/SERVERNAME/some.key
+mv some.key some.old
+
+systemctl restart ecs-ec-ingress
+```
+Restart wincollect agent, a new key should appear
+
+3) Renew/redownload configserver.pem 
+Go into the wincollect agent configuration folder, delete the configserver.pem file and restart the wincollect service.
+In my case, the PEM file was identical... but it worked!
 
 
 
