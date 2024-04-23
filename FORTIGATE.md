@@ -949,3 +949,75 @@ Column #4 - CPU usage (%)
 Column #5 - Memory usage (%)
 ```
 
+---
+
+# FortiAP
+
+Console usually at 9600, sometimes at 115200
+
+```
+putty -serial com10 -sercfg 115200,8,n,1,N
+```
+
+## FortiAP config and diag
+https://docs.fortinet.com/document/fortiap/7.4.2/fortiwifi-and-fortiap-configuration-guide/65088/fortiap-cli-configuration-and-diagnostics-commands
+
+```
+FortiAP-231F # cfg -s
+BAUD_RATE:=9600
+WTP_NAME:=
+WTP_LOCATION:=
+FIRMWARE_UPGRADE:=0
+FACTORY_RESET:=0
+LOGIN_PASSWD_ENC:=cdscdscds--
+ADMIN_TIMEOUT:=5
+WANLAN_MODE:=WAN-ONLY
+AP_MODE:=0
+STP_MODE:=0
+AP_MGMT_VLAN_ID:=0
+ADDR_MODE:=STATIC
+AP_IPADDR:=10.32.9.84
+AP_NETMASK:=255.255.255.0
+IPGW:=10.32.9.199
+DNS_SERVER:=10.32.9.199
+ALLOW_HTTPS:=2
+ALLOW_SSH:=2
+AC_DISCOVERY_TYPE:=0
+AC_IPADDR_1:=192.168.1.1
+AC_IPADDR_2:=
+AC_IPADDR_3:=
+AC_HOSTNAME_1:=_capwap-control._udp.example.com
+AC_HOSTNAME_2:=
+AC_HOSTNAME_3:=
+AC_DISCOVERY_MC_ADDR:=224.0.1.140
+AC_DISCOVERY_DHCP_OPTION_CODE:=138
+AC_DISCOVERY_FCLD_APCTRL:=
+AC_DISCOVERY_FCLD_ID:=
+AC_DISCOVERY_FCLD_PASSWD_ENC:=
+AC_CTL_PORT:=5246
+AP_DATA_CHAN_SEC:=clear,dtls,ipsec
+BONJOUR_GW:=2
+MESH_AP_TYPE:=0
+LED_STATE:=2
+POE_MODE:=0
+```
+
+## FortiAP NAC Stuff
+
+JSON NAC objects for policies: https://filestore.fortinet.com/product-downloads/fortilink/HTFO_list.json
+
+Wireless nac support: https://docs.fortinet.com/document/fortigate/7.0.0/new-features/806701/wireless-nac-support
+
+Example NAC to block mobile: https://community.fortinet.com/t5/FortiGate/Technical-Tip-Usage-of-NAC-Policies-to-block-traffic-from-Mobile/ta-p/282238
+
+Example NAC Detect Huawei: https://community.fortinet.com/t5/Support-Forum/Detecting-Huawei-devices/m-p/6701
+
+Example NAC policies for WLAN: https://community.fortinet.com/t5/FortiAP/Technical-Tip-How-to-configure-NAC-Policies-for-WLAN/ta-p/267603
+
+
+
+
+
+
+
+
