@@ -530,6 +530,21 @@ show
 
 # GET / DEBUG / DIAG / TROUBLESHOOT
 
+
+#### Show ip address
+
+```
+diagnose ip address list
+IP=192.168.1.80->192.168.1.80/255.255.255.0 index=5 devname=wan1
+IP=10.10.10.1->10.10.10.1/255.255.255.0 index=7 devname=dmz
+IP=127.0.0.1->127.0.0.1/255.0.0.0 index=24 devname=root
+IP=192.168.1.99->192.168.1.99/255.255.255.0 index=28 devname=lan
+IP=10.255.1.1->10.255.1.1/255.255.255.0 index=29 devname=fortilink
+IP=127.0.0.1->127.0.0.1/255.0.0.0 index=30 devname=vsys_ha
+IP=127.0.0.1->127.0.0.1/255.0.0.0 index=32 devname=vsys_fgfm
+IP=127.0.0.1->127.0.0.1/255.0.0.0 index=33 devname=vsys_if#0
+```
+
 #### High availability
 
 Status:
