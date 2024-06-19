@@ -317,10 +317,14 @@ Debugging authentication process
 
 #### Pointers
 
+Azure- note the group attribute and the multi group match:
 https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/584456/configuring-saml-sso-login-for-ssl-vpn-with-azure-ad-acting-as-saml-idp
-https://learn.microsoft.com/en-us/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
 https://learn.microsoft.com/it-it/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
+
+Okta:
 https://docs.fortinet.com/document/fortigate/7.4.4/administration-guide/499536/ssl-vpn-with-okta-as-saml-idp
+
+
 
 
 #### Realms and URLS - watch out!!
