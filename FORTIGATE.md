@@ -315,9 +315,69 @@ Debugging authentication process
 
 ### VPN with SAML authentication
 
+#### Pointers
+
 https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/584456/configuring-saml-sso-login-for-ssl-vpn-with-azure-ad-acting-as-saml-idp
 https://learn.microsoft.com/en-us/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
 https://learn.microsoft.com/it-it/azure/active-directory/saas-apps/fortigate-ssl-vpn-tutorial
+https://docs.fortinet.com/document/fortigate/7.4.4/administration-guide/499536/ssl-vpn-with-okta-as-saml-idp
+
+
+#### Realms and URLS - watch out!!
+https://community.fortinet.com/t5/FortiGate/Technical-Tip-SSL-VPN-with-realms-and-SAML-authentication/ta-p/204708
+
+Quote: On 'config user saml', it is not necessary to define the realm for the SP side, and configuration as shown below can be used for both scenarios with and without the realms.
+
+**So, realm name must never be specified on idp/sp URLs** 
+
+Always match trailing `/` in idp and FG conf
+
+
+#### Debug and group mismatch
+```
+diagnose debug application samld -1
+diag debug enable
+
+diagnose debug application samld -1
+diagnose debug application sslvpn -1
+diag debug enable
+```
+
+Look for assertion details, signing errors and mostly the attributes:
+
+```
+samld_send_common_reply [122]:     Attr: 17, 29, magic=x-xxxxxxxxxxxxxxxxxxxxxxx
+samld_send_common_reply [118]:     Attr: 10, 40, 'username' 'simone.zabberoni@gmail.com'
+samld_send_common_reply [118]:     Attr: 10, 19, 'group' 'Everyone'
+samld_send_common_reply [118]:     Attr: 10, 23, 'group' 'SSLVPN group'  <- must match the group string into the FG configuration
+samld_send_common_reply [122]:     Attr: 11, 566, https://trial-okta_stuff.okta.com?SAMLRequest=xxxxxxxxxxxxxxx
+```
+
+Watch out for `No group info in SAML response` and `SAML group mismatch`, fix up group assertion attributes
+
+
+
+#### Okta sample
+
+https://docs.fortinet.com/document/fortigate/7.4.4/administration-guide/499536/ssl-vpn-with-okta-as-saml-idp
+
+```
+config user saml
+    edit "SAML OKTA TEST"
+        set entity-id "https://your_firewall_here/remote/saml/metadata/"
+        set single-sign-on-url "https://your_firewall_here/remote/saml/login"
+        set single-logout-url "https://your_firewall_here/remote/saml/logout"
+        set idp-entity-id "http://www.okta.com/okta_id"
+        set idp-single-sign-on-url "https://trial-okta_stuff.okta.com/app/trial-okta_stuff_okta_app_here/okta_id/sso/saml"
+        set idp-single-logout-url "https://trial-okta_stuff.okta.com"
+        set idp-cert "REMOTE_Cert_1"
+        set user-name "username"
+        set group-name "group"
+        set digest-method sha1
+    next
+```
+
+#### Azure sample
 
 ```
 config user saml
