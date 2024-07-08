@@ -302,6 +302,20 @@ List connected FSSO CA.
 # diag debug authd fsso server-status
 ```
 
+Additional debug
+```
+diagnose debug application authd 8256
+diagnose debug console timestamp enable
+diagnose debug enable
+diagnose debug authd fsso server-status
+diagnose debug authd fsso list
+
+
+diagnose debug authd fsso refresh-logons	
+diagnose debug authd fsso clear-logons	
+diagnose debug authd fsso refresh-groups
+```
+
 Debugging authentication process
 ```
 # diag debug reset
