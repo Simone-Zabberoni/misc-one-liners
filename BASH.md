@@ -634,4 +634,28 @@ systemctl enable noip2
 systemctl start noip2
 ```
 
+## CLOUD INIT
+
+### Sample stuff
+
+Brutal user with plaintext password+sudo and keyboard layout (ignored by Rocky linux, IDK why)
+
+```
+#cloud-config
+users:
+  - default
+  - name: your_user
+    shell: /bin/bash
+    lock_passwd: false
+    plain_text_passwd: some_strong_password
+    groups: sudo
+    sudo: ALL=(ALL:ALL) ALL
+
+keyboard:
+  layout: it
+```
+
+
+
+
 
