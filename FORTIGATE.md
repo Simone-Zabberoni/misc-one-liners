@@ -1108,6 +1108,116 @@ Example NAC Detect Huawei: https://community.fortinet.com/t5/Support-Forum/Detec
 Example NAC policies for WLAN: https://community.fortinet.com/t5/FortiAP/Technical-Tip-How-to-configure-NAC-Policies-for-WLAN/ta-p/267603
 
 
+## FortiAP OWE open wireless with encryption - captive portal with transition 
+
+https://docs.fortinet.com/document/fortiap/7.4.4/fortiwifi-and-fortiap-configuration-guide/233803/wpa3-security
+
+*Note: FortiOS 7.4.4 needed!*
+
+*Note: CLI only*
+
+Configure both OPEN and OWE wlans (owe->no broadcast) with captive portal 
+Set owe-transition on both wlans: newer devices will transition to OWE, older will stay on OPEN
+
+```
+config wireless-controller vap
+    edit "Guest-OPEN"
+        set ssid "Guest-OPEN"
+        set security open
+        set 80211k disable
+        set 80211v disable
+        set owe-transition enable
+        set owe-transition-ssid "Guest-OWE"
+        set selected-usergroups "Guest-Group"
+        set intra-vap-privacy enable
+        set schedule "always"
+        set captive-portal enable
+    next
+    edit "Guest-OWE"
+        set ssid "Guest-OWE"
+        set broadcast-ssid disable
+        set security owe
+        set pmf enable
+        set 80211k disable
+        set 80211v disable
+        set owe-transition enable
+        set owe-transition-ssid "Guest-OPEN"
+        set selected-usergroups "Guest-Group"
+        set intra-vap-privacy enable
+        set schedule "always"
+        set captive-portal enable
+    next
+end
+```
+
+Use the firewall as dhcp + dns with forwarding (otherwise captive won't work):
+```
+config system dhcp server
+    edit XXX
+        set dns-service local
+        set default-gateway 192.168.100.254
+        set netmask 255.255.255.0
+        set interface "Guest-OPEN"
+        config ip-range
+            edit 1
+                set start-ip 192.168.100.2
+                set end-ip 192.168.100.250
+            next
+        end
+    next
+    edit XXX
+        set dns-service local
+        set default-gateway 192.168.101.254
+        set netmask 255.255.255.0
+        set interface "Guest-OWE"
+        config ip-range
+            edit 1
+                set start-ip 192.168.101.2
+                set end-ip 192.168.101.250
+            next
+        end
+    next
+end
+```
+```
+config system dns-server
+    edit "Guest-OPEN"
+        set mode forward-only
+    next
+    edit "Guest-OWE"
+        set mode forward-only
+    next
+end
+```
+
+Some simple policies:
+```
+config firewall policy
+    edit 0
+        set srcintf "Guest-OPEN"
+        set dstintf "wan1"
+        set action accept
+        set srcaddr "Net-Guest-OPEN"
+        set dstaddr "all"
+        set schedule "always"
+        set service "ALL"
+        set ssl-ssh-profile "certificate-inspection"
+        set logtraffic all
+    next
+
+	edit 0
+        set srcintf "Guest-OWE"
+        set dstintf "wan1"
+        set action accept
+        set srcaddr "Net-Guest-OWE"
+        set dstaddr "all"
+        set schedule "always"
+        set service "ALL"
+        set ssl-ssh-profile "certificate-inspection"
+        set logtraffic all
+    next
+end
+```
 
 
 
