@@ -1221,6 +1221,18 @@ end
 
 
 
+## Guest with user limit
+
+To limit guest voucher usage, for example to 2 concurrent session with the same users (ie: laptop and mobile)
+
+```
+config user group
+    edit "your_guest_group"
+        set auth-concurrent-override enable
+        set auth-concurrent-value 2
+    next
+end
+```     
 
 
 
