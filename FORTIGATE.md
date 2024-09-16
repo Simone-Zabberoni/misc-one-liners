@@ -327,6 +327,12 @@ Debugging authentication process
 
 ---
 
+### VPN authentication order with multiple backends
+https://community.fortinet.com/t5/FortiGate/Technical-Tip-A-quick-guide-to-FortiGate-SSL-VPN-authentication/ta-p/202041
+
+TLDR: use realms for different authentication backends (ie RADIUS + LDAP)
+
+
 ### VPN with SAML authentication
 
 #### Pointers
