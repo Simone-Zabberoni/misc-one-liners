@@ -1122,11 +1122,17 @@ https://docs.fortinet.com/document/fortiap/7.4.4/fortiwifi-and-fortiap-configura
 
 *Note: CLI only*
 
+
 Configure both OPEN and OWE wlans (owe->no broadcast) with captive portal 
 Set owe-transition on both wlans: newer devices will transition to OWE, older will stay on OPEN
 
+**Anomaly: very very important!**
+FortiOS shows the `set captive-portal enable` directive last, AFTER the `set selected-usergroups "Guest-Group"`
+But `selected-usergroups` isn't available if you aren't in captive portal mode... you need to `set captive-portal enable` first!
+
+
 ```
-config wireless-controller vap
+show wireless-controller vap
     edit "Guest-OPEN"
         set ssid "Guest-OPEN"
         set security open
@@ -1137,7 +1143,7 @@ config wireless-controller vap
         set selected-usergroups "Guest-Group"
         set intra-vap-privacy enable
         set schedule "always"
-        set captive-portal enable
+        set captive-portal enable               <- paste this BEFORE set selected-usergroups !!
     next
     edit "Guest-OWE"
         set ssid "Guest-OWE"
@@ -1151,7 +1157,7 @@ config wireless-controller vap
         set selected-usergroups "Guest-Group"
         set intra-vap-privacy enable
         set schedule "always"
-        set captive-portal enable
+        set captive-portal enable               <- paste this BEFORE set selected-usergroups !!
     next
 end
 ```
