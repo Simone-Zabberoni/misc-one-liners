@@ -667,24 +667,24 @@ Assume eth0 bound to "public" zone as default
 Assume ipv4 forwarding enabled
 
 New zone and tun0 binding:
----
+```
 firewall-cmd --permanent --new-zone=sz-tun
 firewall-cmd --permanent --zone=sz-tun --change-interface=tun0
----
+```
 
 
 Rich policy with stateful, automatically enables ESTABLISHED/RELATED return packets:
----
+```
 firewall-cmd --permanent --new-policy sz-tun-policy
 firewall-cmd --permanent --policy  sz-tun-policy --add-ingress-zone public
 firewall-cmd --permanent --policy  sz-tun-policy --add-egress-zone sz-tun
 firewall-cmd --permanent --policy  sz-tun-policy --add-rich-rule='rule family="ipv4" source address="10.10.1.0/24" destination address="10.20.1.0/24" accept'
----
+```
 
-Don't forget to reload
----
+Don't forget to reload:
+```
 firewall-cmd --reload
----
+```
 
 
 
