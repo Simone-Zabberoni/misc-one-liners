@@ -638,7 +638,7 @@ systemctl start noip2
 
 ### Sample stuff
 
-Brutal user with plaintext password+sudo and keyboard layout (ignored by Rocky linux, IDK why)
+Brutal user with plaintext password login+sudo and keyboard layout (ignored by Rocky linux, IDK why)
 
 ```
 #cloud-config
@@ -650,6 +650,8 @@ users:
     plain_text_passwd: some_strong_password
     groups: sudo
     sudo: ALL=(ALL:ALL) ALL
+
+ssh_pwauth: True
 
 keyboard:
   layout: it
