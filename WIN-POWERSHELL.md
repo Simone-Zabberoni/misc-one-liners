@@ -957,3 +957,28 @@ Convert it to ASCII
 ```
 certutil -encode dccert.cer my-CA.pem
 ```
+
+
+---
+
+## Base64 and unicode conversion
+
+Useful for extracting base64 powershell stuff fron logs (ref CTFs), usually unicode
+
+```
+# Path to the file containing Base64 strings
+$filePath = "allbase64_strings.txt"
+
+Get-Content -Path $filePath | ForEach-Object {
+    $decodedBytes = [Convert]::FromBase64String($_)
+    
+    # Convert the bytes to a Unicode string
+    $decodedString = [System.Text.Encoding]::Unicode.GetString($decodedBytes)
+    
+    # Output the decoded string
+    Write-Output $decodedString
+} | out-file allbase64-decoded.txt
+
+```
+
+
