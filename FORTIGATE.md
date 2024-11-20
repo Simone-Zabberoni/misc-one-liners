@@ -1280,5 +1280,12 @@ config user group
 end
 ```     
 
+## FortiAP channels, mhz and potential bandwidth issues
+
+https://docs.fortinet.com/document/fortiap/7.0.0/secure-wireless-concept-guide/15862/channels-and-channel-planning
 
 
+ For example, in a large conference room or auditorium, a single FortiAP can easily cover the room, but it cannot have 1000 devices connected to it. 20 MHz channels allow you to throw more APs at the capacity problem until you run out of channels. On the other hand, an office with 5 FortiAPs and a dozen devices each could consider 80 MHz wide channels.
+
+
+ 
