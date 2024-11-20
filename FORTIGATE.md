@@ -1234,6 +1234,37 @@ config firewall policy
 end
 ```
 
+## FortiAP management - remote site through ipsec tunnel
+
+It doesn't make sense, but enable Fabric connection on the ipsec interface as well as the real interface:
+
+
+https://www.reddit.com/r/fortinet/comments/ng720j/remote_ipsec_vpn_site_fortiap_wont_connect_to/
+
+>Our FortiGate has local CAPWAP VLAN interface. Local FortiAPs connect without any issue using L2. Remote FortiAPs receive IP address of CAPWAP VLAN interface via local DHCP Option 138. They connect through IPsec tunnel without any problem. They can be seen in the Managed FortiAPs grid as Unauthorized. Once authorized they are shown as Offline = same behaviour as yours.
+
+> We have found that not only target CAPWAP VLAN interface has to have Security Fabric Connection enabled in Administrative Access, but this setting has to be enabled for IPsec interface too! For me it is not understandable (as the IPsec interface is not target interface, just forwarding interface), but we have verified it by trial and error method.
+
+
+## FortiAP CAPWAP debug
+
+https://community.fortinet.com/t5/FortiGate/Troubleshooting-Tip-Managed-FortiAP-Issues/ta-p/207852
+
+Dump UDP/5246 packets
+```
+diag sniff packet portX “arp or udp port 5246 or udp port 67” 6 0
+```
+
+Diagnose log - almost unreadable:
+
+```
+diagnose debug reset
+diag debug console timestamp enable
+diag debug application cw_acd 0x7f
+diag debug enable
+```
+
+
 
 
 ## Guest with user limit
