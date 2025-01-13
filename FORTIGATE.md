@@ -362,6 +362,9 @@ Always match trailing `/` in idp and FG conf
 diagnose debug application samld -1
 diag debug enable
 
+
+diagnose vpn ssl debug-filter src-addr4 <client public ip address>
+
 diagnose debug application samld -1
 diagnose debug application sslvpn -1
 diag debug enable
@@ -1115,7 +1118,6 @@ Example NAC policies for WLAN: https://community.fortinet.com/t5/FortiAP/Technic
 
 
 ## FortiAP OWE open wireless with encryption - captive portal with transition 
-
 https://docs.fortinet.com/document/fortiap/7.4.4/fortiwifi-and-fortiap-configuration-guide/233803/wpa3-security
 
 *Note: FortiOS 7.4.4 needed!*
