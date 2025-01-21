@@ -357,6 +357,19 @@ Quote: On 'config user saml', it is not necessary to define the realm for the SP
 Always match trailing `/` in idp and FG conf
 
 
+#### Timeouts - watch out!!
+
+Configure the remote authentication timeout value as needed (needed for Azure!):
+
+```
+config system global
+set remoteauthtimeout 60
+end
+```
+
+
+
+
 #### Debug and group mismatch
 ```
 diagnose debug application samld -1
