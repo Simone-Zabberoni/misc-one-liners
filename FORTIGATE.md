@@ -967,6 +967,15 @@ MCLAG debug:
 diagnose switch mclag peer-consistency-check
 ```
 
+```
+diagnose switch mclag list
+```
+```
+diagnose switch mclag icl
+```
+
+
+
 Gbics info:
 
 ```
