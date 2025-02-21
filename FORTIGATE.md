@@ -967,6 +967,81 @@ MCLAG debug:
 diagnose switch mclag peer-consistency-check
 ```
 
+Gbics info:
+
+```
+# get switch module summary
+
+
+  Portname   State    Type       Transceiver    RX  Vendor           Part Number      Serial Number
+  __________ _______  _______    ____________   ___ ________________ ________________ ______________
+
+  port25     INSERT  SFP/SFP+    1000-Base-SX   LOS FINISAR CORP.    FTLF8519P3BNL    x
+  port26     INSERT  SFP/SFP+    1000-Base-SX   LOS +Fortinet        P24850-01        x
+  port27     INSERT  SFP/SFP+    1000-Base-SX   LOS FINISAR CORP.    FTLF8519P3BNL    x
+  port28     EMPTY
+```
+
+
+```
+get switch modules status
+____________________________________________________________
+Port(port25)
+temperature      35.593750 C
+voltage          3.277700 volts
+alarm_flags      0x0000
+warning_flags    0x0000
+laser_bias       0.661200 mAmps
+tx_power         -5.093393 dBm
+rx_power         -5.783961 dBm
+options          0x000F ( TX_DISABLE TX_FAULT RX_LOSS TX_POWER_LEVEL1 )
+options_status   0x0008 ( TX_POWER_LEVEL1 )
+
+____________________________________________________________
+Port(port26)
+temperature      36.371094 C
+voltage          3.294800 volts
+alarm_flags      0x0000
+warning_flags    0x0000
+laser_bias       0.560400 mAmps
+tx_power         -5.104634 dBm
+rx_power         -5.624080 dBm
+options          0x000F ( TX_DISABLE TX_FAULT RX_LOSS TX_POWER_LEVEL1 )
+options_status   0x0008 ( TX_POWER_LEVEL1 )
+
+____________________________________________________________
+Port(port27)
+temperature      31.953125 C
+voltage          3.282700 volts
+alarm_flags      0x0000
+warning_flags    0x0000
+laser_bias       0.623800 mAmps
+tx_power         -5.055671 dBm
+rx_power         -8.027194 dBm
+options          0x000F ( TX_DISABLE TX_FAULT RX_LOSS TX_POWER_LEVEL1 )
+options_status   0x0008 ( TX_POWER_LEVEL1 )
+
+____________________________________________________________
+Port(port28)
+ Empty
+```
+
+```
+
+diagnose switch physical-ports summary port26
+
+
+  Portname    Status  Tpid  Vlan  Duplex  Speed  Flags       Discard
+  __________  ______  ____  ____  ______  _____  __________  _________
+
+  port26      down    8100  252   full    1G     QS,  ,      none
+
+  Flags: QS(802.1Q) QE(802.1Q-in-Q,external) QI(802.1Q-in-Q,internal)
+  TS(static trunk) TF(forti trunk) TL(lacp trunk); MD(mirror dst)
+  MI(mirror ingress) ME(mirror egress) MB(mirror ingress and egress) CF (Combo Fiber), CC (Combo Copper)
+
+
+```
 ---
 
 
