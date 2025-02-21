@@ -982,3 +982,21 @@ Get-Content -Path $filePath | ForEach-Object {
 ```
 
 
+## PDF and image split/convert etc
+
+Powershell tool to hack pdf:
+https://evotec.xyz/merging-splitting-and-creating-pdf-files-with-powershell/
+
+
+Split a pdf into single pages pdfs:
+```
+Split-PDF -FilePath "some.pdf" -OutputFolder "\out"
+```
+
+
+Single PDF to png (install ghostscript and imagemagkick)
+```
+magick  -density 300 "sampledoc.pdf[0]" -quality 100 "output.png"
+```
+
+
