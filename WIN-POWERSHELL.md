@@ -994,9 +994,19 @@ Split-PDF -FilePath "some.pdf" -OutputFolder "\out"
 ```
 
 
-Single PDF to png (install ghostscript and imagemagkick)
+Single PDF to png (install ghostscript and imagemagkick):
 ```
 magick  -density 300 "sampledoc.pdf[0]" -quality 100 "output.png"
+```
+
+All pdfs to png:
+
+```
+Get-ChildItem -Path "." -Filter "*.pdf" | ForEach-Object {
+   $inpdf  = $_.FullName + "[0]"
+   $outpng = $_.DirectoryName + '\' + $_.BaseName +'.png'
+   magick -density 300 $inpdf -quality 100 $outpng 
+}
 ```
 
 
