@@ -1388,3 +1388,59 @@ https://docs.fortinet.com/document/fortiap/7.0.0/secure-wireless-concept-guide/1
 
 
  
+
+---
+
+# FortiAnalyzer
+
+## Custom dataset for vpn authenticated history
+
+A time ordered list of successful logons with user and source ip - **ipsec only**
+
+Note: maybe better through log filter -> create chart but it does not work!! Throws some error through the web interface, no update solved it....
+
+Select:
+```     
+select from_dtime(dtime) as `start_time`, `msg`, `devid`, `status`, `xauthuser`, ipstr(`remip`) as remote_ip, `stage`, `result` from $log where $filter and (lower(`xauthuser`) != lower('N/A') and result=='OK' and stage=='2' and msg=='progress IPsec phase 2' ) order by start_time
+```     
+
+Note: it uses some functions like `ipstr()` and `from_dtime()` to convert ip addresses and timestamps.
+
+
+Pretty version:
+
+```     
+SELECT From_dtime(dtime) AS `start_time`,
+       `msg`,
+       `devid`,
+       `status`,
+       `xauthuser`,
+       Ipstr(`remip`)    AS remote_ip,
+       `stage`,
+       `result`
+FROM   $log
+WHERE  $filter
+       AND ( Lower(`xauthuser`) != Lower('N/A')
+             AND result == 'OK'
+             AND stage == '2'
+             AND msg == 'progress IPsec phase 2' )
+ORDER  BY start_time 
+```     
+
+
+Output:
+
+```
+start_time			msg						devid				status	xauthuser	remote_ip		stage	result
+2025-02-25 07:28:04	progress IPsec phase 2	FG100Fxxxxxxxxxx	success	j.smith		1.2.3.4			2		OK
+2025-02-25 07:40:38	progress IPsec phase 2	FG100Fyyyyyyyyyy	success	m.doe		4.3.2.1			2		OK
+2025-02-25 07:59:48	progress IPsec phase 2	FG100Fxxxxxxxxxx	success	some.one	11.11.22.22		2		OK
+2025-02-25 08:11:29	progress IPsec phase 2	FG100Fzzzzzzzzzz	success	a.nother	22.22.33.33		2		OK
+```
+
+Create a chart to use it and filter the fields, then use the chart inside a report.
+
+
+
+
+
